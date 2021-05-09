@@ -2,27 +2,27 @@
 #define MATH_H
 
 #include "gl-includes.h"
+#include <cassert>
 #include <cmath>
 #include <iostream>
-#include <cassert>
 
 constexpr double pi = 3.141592653589793238462643383279502;
 
 constexpr double radians(double theta)
 {
-    return theta * pi / 180.0;
+    return theta * pi / 180;
 }
 
 constexpr double degrees(double theta)
 {
-    return theta * 180.0 / pi;
+    return theta * 180 / pi;
 }
 
 inline double norm(double theta)
 {
-    double percent = theta / 360.0;
+    double percent = theta / 360;
     double revolutions_to_normal = std::floor(percent);
-    double degrees_to_normal = revolutions_to_normal * 360.0;
+    double degrees_to_normal = revolutions_to_normal * 360;
     return theta - degrees_to_normal;
 }
 
@@ -51,9 +51,9 @@ constexpr bool near(double a, double b)
 
 struct Matrix {
     double matrix[3][3] {
-        { 0.0, 0.0, 0.0 },
-        { 0.0, 0.0, 0.0 },
-        { 0.0, 0.0, 0.0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 },
     };
 
     double* operator[](size_t i)
@@ -106,9 +106,9 @@ struct Matrix {
 };
 
 struct Vec {
-    double x { 0.0 };
-    double y { 0.0 };
-    double z { 0.0 };
+    double x { 0 };
+    double y { 0 };
+    double z { 0 };
 
     double length() const
     {
@@ -183,21 +183,21 @@ struct Vec {
 
         constexpr Matrix id = {
             {
-                { 1.0, 0.0, 0.0 },
-                { 0.0, 1.0, 0.0 },
-                { 0.0, 0.0, 1.0 },
+                { 1, 0, 0 },
+                { 0, 1, 0 },
+                { 0, 0, 1 },
             }
         };
 
         Matrix cross = {
             {
-                { 0.0, -k.z, k.y },
-                { k.z, 0.0, -k.x },
-                { -k.y, k.x, 0.0 },
+                { 0, -k.z, k.y },
+                { k.z, 0, -k.x },
+                { -k.y, k.x, 0 },
             }
         };
 
-        Matrix rotation = id + cross * std::sin(theta) + (cross * cross) * (1.0 - std::cos(theta));
+        Matrix rotation = id + cross * std::sin(theta) + (cross * cross) * (1 - std::cos(theta));
 
         return v * rotation;
     }
@@ -209,9 +209,9 @@ struct Vec {
 
         Matrix matrix = {
             {
-                { 1.0, 0.0, 0.0 },
-                { 0.0, std::cos(theta), std::sin(theta) },
-                { 0.0, -std::sin(theta), std::cos(theta) },
+                { 1, 0, 0 },
+                { 0, std::cos(theta), std::sin(theta) },
+                { 0, -std::sin(theta), std::cos(theta) },
             }
         };
 
@@ -225,9 +225,9 @@ struct Vec {
 
         Matrix matrix = {
             {
-                { std::cos(theta), 0.0, -std::sin(theta) },
-                { 0.0, 1.0, 0.0 },
-                { std::sin(theta), 0.0, std::cos(theta) },
+                { std::cos(theta), 0, -std::sin(theta) },
+                { 0, 1, 0 },
+                { std::sin(theta), 0, std::cos(theta) },
             }
         };
 
@@ -241,9 +241,9 @@ struct Vec {
 
         Matrix matrix = {
             {
-                { std::cos(theta), std::sin(theta), 0.0 },
-                { -std::sin(theta), std::cos(theta), 0.0 },
-                { 0.0, 0.0, 1.0 },
+                { std::cos(theta), std::sin(theta), 0 },
+                { -std::sin(theta), std::cos(theta), 0 },
+                { 0, 0, 1 },
             }
         };
 

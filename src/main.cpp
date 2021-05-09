@@ -72,7 +72,7 @@ int main(int argc, char** argv)
     glutCreateWindow("Asteroid Arena 3D");
     // glutFullScreen();
 
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClearColor(0, 0, 0, 1);
     glutSetCursor(GLUT_CURSOR_NONE);
 
     glutDisplayFunc(display);
