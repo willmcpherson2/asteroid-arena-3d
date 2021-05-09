@@ -1,6 +1,7 @@
 #include "gl-includes.h"
 #include "input.h"
 #include "world.h"
+#include <CoreGraphics/CoreGraphics.h>
 #include <iomanip>
 #include <iostream>
 
@@ -49,15 +50,11 @@ static void mouse_click(int, int state, int, int)
     g_input.handle_mouse_click(state == GLUT_DOWN);
 }
 
-static void mouse_move(int x, int y)
+static void mouse_move(int, int)
 {
-    static int last_x = x;
-    int delta_x = x - last_x;
-    last_x = x;
-
-    static int last_y = y;
-    int delta_y = y - last_y;
-    last_y = y;
+    int delta_x = 0;
+    int delta_y = 0;
+    CGGetLastMouseDelta(&delta_x, &delta_y);
 
     g_input.handle_mouse_move(delta_x, delta_y);
 }
@@ -65,6 +62,8 @@ static void mouse_move(int x, int y)
 int main(int argc, char** argv)
 {
     std::cout << std::fixed << std::setprecision(2);
+
+    CGAssociateMouseAndMouseCursorPosition(false);
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
@@ -74,6 +73,7 @@ int main(int argc, char** argv)
     // glutFullScreen();
 
     glClearColor(0.0, 0.0, 0.0, 1.0);
+    glutSetCursor(GLUT_CURSOR_NONE);
 
     glutDisplayFunc(display);
     glutIdleFunc(idle);
