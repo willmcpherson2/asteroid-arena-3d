@@ -50,11 +50,7 @@ ifeq ($(CXX), c++)
 endif
 endif
 
-ifeq ($(shell uname), Darwin)
-	LDFLAGS += -framework GLUT -framework OpenGL -framework Carbon
-else
-	LDFLAGS += -lglut -lGLU -lGL
-endif
+LDFLAGS += -framework GLUT -framework OpenGL -framework Carbon
 
 $(shell mkdir -p $(BUILD_DIR))
 

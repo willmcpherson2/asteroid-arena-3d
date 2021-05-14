@@ -1,7 +1,7 @@
 #include "world.h"
-#include "gl-includes.h"
 #include <algorithm>
 #include <iostream>
+#include <GLUT/glut.h>
 
 // World
 

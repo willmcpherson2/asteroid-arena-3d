@@ -1,10 +1,10 @@
 #ifndef MATH_H
 #define MATH_H
 
-#include "gl-includes.h"
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <OpenGL/gl.h>
 
 constexpr double pi = 3.141592653589793238462643383279502;
 
