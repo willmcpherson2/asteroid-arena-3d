@@ -136,7 +136,7 @@ struct Vec {
     double theta(Vec b) const
     {
         Vec a = *this;
-        return acos_degrees(a.norm().dot(b.norm()));
+        return degrees(std::acos(a.norm().dot(b.norm())));
     }
 
     Vec operator+(Vec b) const

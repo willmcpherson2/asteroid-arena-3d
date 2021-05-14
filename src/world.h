@@ -5,9 +5,11 @@
 #include "math.h"
 #include "parameters.h"
 
-class Camera {
+class Ship {
 public:
     void draw() const;
+    void draw_ship() const;
+    void draw_camera() const;
     void simulate(int delta, Input& input);
 
 private:
@@ -20,7 +22,7 @@ private:
 class World {
 public:
     void draw() const;
-    void draw_cube() const;
+    void draw_arena() const;
     void simulate(int delta, Input& input);
 
 private:
@@ -30,7 +32,7 @@ private:
     int m_delta { 0 };
     Input m_input;
 
-    Camera m_camera;
+    Ship m_ship;
 };
 
 #endif

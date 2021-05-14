@@ -18,12 +18,12 @@ constexpr double view_near_plane = 0.1;
 
 // Arena
 
-constexpr double arena_width = 100;
-constexpr double arena_height = 100;
-constexpr double arena_depth = 100;
+constexpr double arena_width = 120;
+constexpr double arena_height = 120;
+constexpr double arena_depth = 120;
 
 // Ship
 
-constexpr double ship_speed = 2;
+constexpr double ship_speed = 0.04;
 
 #endif
