@@ -3,6 +3,16 @@
 #include <cstdlib>
 #include <iostream>
 
+Input Input::take()
+{
+    Input input = *this;
+
+    m_delta_x = 0;
+    m_delta_y = 0;
+
+    return input;
+}
+
 void Input::handle_key(int key, bool down)
 {
     m_any = down;
@@ -33,20 +43,6 @@ void Input::handle_key(int key, bool down)
 void Input::handle_mouse_click(bool down)
 {
     m_mouse = down;
-}
-
-int Input::mouse_delta_x()
-{
-    int delta_x = m_delta_x;
-    m_delta_x = 0;
-    return delta_x;
-}
-
-int Input::mouse_delta_y()
-{
-    int delta_y = m_delta_y;
-    m_delta_y = 0;
-    return delta_y;
 }
 
 void Input::handle_mouse_move(int delta_x, int delta_y)

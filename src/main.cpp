@@ -30,7 +30,7 @@ static void idle()
     int delta = time - last_time;
     last_time = time;
 
-    g_world.simulate(delta, g_input);
+    g_world.simulate(delta, g_input.take());
 
     glutPostRedisplay();
 }

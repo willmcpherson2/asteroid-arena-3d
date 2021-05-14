@@ -5,7 +5,7 @@
 
 // World
 
-void World::simulate(int delta, Input& input)
+void World::simulate(int delta, Input input)
 {
     m_delta = delta;
     m_input = input;
@@ -120,7 +120,7 @@ void Arena::draw() const
 
 // Ship
 
-void Ship::simulate(int delta, Input& input)
+void Ship::simulate(int delta, Input input)
 {
     double x_delta = delta * input_mouse_sensitivity * input.mouse_delta_x();
     double y_delta = delta * input_mouse_sensitivity * input.mouse_delta_y();

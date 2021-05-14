@@ -10,7 +10,7 @@ class Arena {
 public:
     Arena();
     void draw() const;
-    void simulate(int delta, Input& input);
+    void simulate(int delta, Input input);
 
 private:
     static std::vector<Vec> make_wall(double x_theta, double y_theta);
@@ -26,7 +26,7 @@ private:
 class Ship {
 public:
     void draw() const;
-    void simulate(int delta, Input& input);
+    void simulate(int delta, Input input);
 
 private:
     void draw_ship() const;
@@ -41,7 +41,7 @@ private:
 class World {
 public:
     void draw() const;
-    void simulate(int delta, Input& input);
+    void simulate(int delta, Input input);
 
 private:
     static void screen_coordinates();
