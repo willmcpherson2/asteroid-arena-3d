@@ -161,6 +161,11 @@ struct Vec {
         return Vec { x / scalar, y / scalar, z / scalar };
     }
 
+    Vec operator-(double scalar) const
+    {
+        return Vec { x - scalar, y - scalar, z - scalar };
+    }
+
     Vec operator*(Matrix matrix) const
     {
         Vec a = *this;

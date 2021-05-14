@@ -17,56 +17,7 @@ void World::draw() const
 {
     world_coordinates();
     m_ship.draw();
-    draw_arena();
-}
-
-void World::draw_arena() const
-{
-    glColor3d(0.5, 0.5, 0.5);
-
-    glPushMatrix();
-
-    glScaled(arena_width, arena_height, arena_depth);
-
-    Vec bot1 { -1, -1, -1 };
-    Vec bot2 { -1, -1, 1 };
-    Vec bot3 { 1, -1, 1 };
-    Vec bot4 { 1, -1, -1 };
-    Vec top1 { -1, 1, -1 };
-    Vec top2 { -1, 1, 1 };
-    Vec top3 { 1, 1, 1 };
-    Vec top4 { 1, 1, -1 };
-
-    glLineWidth(8);
-
-    glBegin(GL_LINE_LOOP);
-    bot1.draw();
-    bot2.draw();
-    bot3.draw();
-    bot4.draw();
-    glEnd();
-
-    glLineWidth(2);
-
-    glBegin(GL_LINE_LOOP);
-    top4.draw();
-    top3.draw();
-    top2.draw();
-    top1.draw();
-    glEnd();
-
-    glBegin(GL_LINES);
-    top1.draw();
-    bot1.draw();
-    top2.draw();
-    bot2.draw();
-    top3.draw();
-    bot3.draw();
-    top4.draw();
-    bot4.draw();
-    glEnd();
-
-    glPopMatrix();
+    m_arena.draw();
 }
 
 void World::screen_coordinates()
@@ -98,6 +49,73 @@ void World::world_coordinates()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(view_fov, view_ratio, view_near_plane, view_distance);
+}
+
+// Arena
+
+Arena::Arena()
+    : m_top(make_wall(0, 270))
+    , m_bottom(make_wall(0, 90))
+    , m_left(make_wall(270, 0))
+    , m_right(make_wall(90, 0))
+    , m_front(make_wall(0, 180))
+    , m_back(make_wall(0, 0))
+{
+}
+
+std::vector<Vec> Arena::make_wall(double x_theta, double y_theta)
+{
+    std::vector<Vec> wall;
+
+    constexpr int grid_square_size = arena_size / arena_grid_divisions;
+
+    for (int int_i = 0; int_i <= arena_size; int_i += grid_square_size) {
+        double i = static_cast<double>(int_i);
+
+        constexpr double offset = static_cast<double>(arena_size) * 0.5;
+
+        Vec top = (Vec { i, 0, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
+        Vec bottom = (Vec { i, arena_size, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
+        Vec left = (Vec { 0, i, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
+        Vec right = (Vec { arena_size, i, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
+
+        wall.push_back(top);
+        wall.push_back(bottom);
+        wall.push_back(left);
+        wall.push_back(right);
+    }
+
+    return wall;
+}
+
+void Arena::draw() const
+{
+    glColor3d(0.5, 0.5, 0.5);
+
+    glPushMatrix();
+
+    glBegin(GL_LINES);
+    for (Vec v : m_top) {
+        v.draw();
+    }
+    for (Vec v : m_bottom) {
+        v.draw();
+    }
+    for (Vec v : m_left) {
+        v.draw();
+    }
+    for (Vec v : m_right) {
+        v.draw();
+    }
+    for (Vec v : m_front) {
+        v.draw();
+    }
+    for (Vec v : m_back) {
+        v.draw();
+    }
+    glEnd();
+
+    glPopMatrix();
 }
 
 // Ship

@@ -4,6 +4,24 @@
 #include "input.h"
 #include "math.h"
 #include "parameters.h"
+#include <vector>
+
+class Arena {
+public:
+    Arena();
+    void draw() const;
+    void simulate(int delta, Input& input);
+
+private:
+    static std::vector<Vec> make_wall(double x_theta, double y_theta);
+
+    std::vector<Vec> m_top;
+    std::vector<Vec> m_bottom;
+    std::vector<Vec> m_left;
+    std::vector<Vec> m_right;
+    std::vector<Vec> m_front;
+    std::vector<Vec> m_back;
+};
 
 class Ship {
 public:
@@ -33,6 +51,7 @@ private:
     Input m_input;
 
     Ship m_ship;
+    Arena m_arena;
 };
 
 #endif

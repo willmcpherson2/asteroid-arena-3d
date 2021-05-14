@@ -18,9 +18,8 @@ constexpr double view_near_plane = 0.1;
 
 // Arena
 
-constexpr double arena_width = 120;
-constexpr double arena_height = 120;
-constexpr double arena_depth = 120;
+constexpr int arena_size = 240;
+constexpr int arena_grid_divisions = 10;
 
 // Ship
 
