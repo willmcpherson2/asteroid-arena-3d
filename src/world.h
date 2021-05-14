@@ -26,11 +26,12 @@ private:
 class Ship {
 public:
     void draw() const;
-    void draw_ship() const;
-    void draw_camera() const;
     void simulate(int delta, Input& input);
 
 private:
+    void draw_ship() const;
+    void draw_camera() const;
+
     Vec m_pos { 0, 0, 0 };
     Vec m_x { 1, 0, 0 };
     Vec m_y { 0, 1, 0 };
@@ -40,7 +41,6 @@ private:
 class World {
 public:
     void draw() const;
-    void draw_arena() const;
     void simulate(int delta, Input& input);
 
 private:
