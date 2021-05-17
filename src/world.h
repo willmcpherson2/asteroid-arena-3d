@@ -25,6 +25,7 @@ private:
 
 class Ship {
 public:
+    Ship();
     void draw() const;
     void simulate(int delta, Input input);
 
@@ -36,6 +37,8 @@ private:
     Vec m_x { 1, 0, 0 };
     Vec m_y { 0, 1, 0 };
     Vec m_z { 0, 0, 1 };
+
+    std::vector<Vec> m_model;
 };
 
 class World {

@@ -1,10 +1,10 @@
 #ifndef MATH_H
 #define MATH_H
 
+#include <OpenGL/gl.h>
 #include <cassert>
 #include <cmath>
 #include <iostream>
-#include <OpenGL/gl.h>
 
 constexpr double pi = 3.141592653589793238462643383279502;
 
@@ -124,7 +124,9 @@ struct Vec {
     double dot(Vec b) const
     {
         Vec a = *this;
-        return a.x * b.x + a.y * b.y + a.z * b.z;
+        // If a ~ b, dot product is 1. This is really just to avoid giving acos
+        // an argument greater than 1.
+        return a.near(b) ? 1 : a.x * b.x + a.y * b.y + a.z * b.z;
     }
 
     Vec cross(Vec b) const
@@ -137,6 +139,33 @@ struct Vec {
     {
         Vec a = *this;
         return degrees(std::acos(a.norm().dot(b.norm())));
+    }
+
+    Vec flatten_x() const
+    {
+        Vec a = *this;
+        a.x = 0;
+        return a;
+    }
+
+    Vec flatten_y() const
+    {
+        Vec a = *this;
+        a.y = 0;
+        return a;
+    }
+
+    Vec flatten_z() const
+    {
+        Vec a = *this;
+        a.z = 0;
+        return a;
+    }
+
+    bool near(Vec b) const
+    {
+        Vec a = *this;
+        return ::near(a.x, b.x) && ::near(a.y, b.y) && ::near(a.z, b.z);
     }
 
     Vec operator+(Vec b) const

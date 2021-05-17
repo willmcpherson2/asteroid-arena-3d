@@ -1,7 +1,8 @@
 #include "world.h"
+#include "obj-loader.h"
+#include <GLUT/glut.h>
 #include <algorithm>
 #include <iostream>
-#include <GLUT/glut.h>
 
 // World
 
@@ -120,6 +121,11 @@ void Arena::draw() const
 
 // Ship
 
+Ship::Ship()
+    : m_model(load("models/point-cube.obj"))
+{
+}
+
 void Ship::simulate(int delta, Input input)
 {
     double x_delta = delta * input_mouse_sensitivity * input.mouse_delta_x();
@@ -161,22 +167,21 @@ void Ship::draw_ship() const
 {
     glPushMatrix();
 
-    glLineWidth(4);
+    Vec tilt_axis = m_z.flatten_y().cross(m_z);
+    double tilt_rotation = m_z.flatten_y().theta(m_z);
+    glRotated(tilt_rotation, tilt_axis.x, tilt_axis.y, tilt_axis.z);
 
-    glBegin(GL_LINES);
+    double spin_theta = m_z.flatten_y().theta({ 0, 0, 1 });
+    double spin_rotation = m_z.x >= 0 ? spin_theta : -spin_theta;
+    glRotated(spin_rotation, 0, 1, 0);
 
-    glColor3d(0, 0, 0.5);
-    m_pos.draw();
-    (m_pos + m_x).draw();
+    double flip_rotation = m_y.y >= 0 ? 0 : 180;
+    glRotated(flip_rotation, 1, 0, 0);
 
-    glColor3d(0, 0.5, 0);
-    m_pos.draw();
-    (m_pos + m_y).draw();
-
-    glColor3d(1, 0, 0);
-    m_pos.draw();
-    (m_pos + m_z).draw();
-
+    glBegin(GL_TRIANGLES);
+    for (auto v : m_model) {
+        v.draw();
+    }
     glEnd();
 
     glPopMatrix();

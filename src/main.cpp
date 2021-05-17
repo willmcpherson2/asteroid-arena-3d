@@ -1,9 +1,9 @@
 #include "input.h"
 #include "world.h"
-#include <iomanip>
-#include <iostream>
 #include <CoreGraphics/CoreGraphics.h>
 #include <GLUT/glut.h>
+#include <iomanip>
+#include <iostream>
 
 static World g_world;
 static Input g_input;
