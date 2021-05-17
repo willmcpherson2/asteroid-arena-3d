@@ -23,7 +23,7 @@ void Ship::simulate(const World& world)
 void Ship::draw() const
 {
     Object camera = ship;
-    camera.forward(-4);
+    camera.forward(-parameters::ship::camera_distance);
     camera.draw_camera(ship.pos);
 
     ship.draw(DrawType::Triangles, { 1, 1, 1 });
