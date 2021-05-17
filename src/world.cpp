@@ -177,12 +177,27 @@ void Ship::draw_ship() const
 
     double flip_rotation = m_y.y >= 0 ? 0 : 180;
     glRotated(flip_rotation, 1, 0, 0);
+    glRotated(flip_rotation, 0, 1, 0);
 
-    glBegin(GL_TRIANGLES);
-    for (auto v : m_model) {
-        v.draw();
-    }
+    glLineWidth(4);
+
+    glBegin(GL_LINES);
+
+    glColor3d(0, 0, 1);
+    Vec {}.draw();
+    Vec { 1, 0, 0 }.draw();
+
+    glColor3d(0, 1, 0);
+    Vec {}.draw();
+    Vec { 0, 1, 0 }.draw();
+
+    glColor3d(1, 0, 0);
+    Vec {}.draw();
+    Vec { 0, 0, 1 }.draw();
+
     glEnd();
+
+    glLineWidth(1);
 
     glPopMatrix();
 }
