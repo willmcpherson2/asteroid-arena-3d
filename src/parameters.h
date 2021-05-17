@@ -29,6 +29,8 @@ namespace arena {
     constexpr int size = 240;
     constexpr int grid_divisions = 10;
     constexpr Colour colour { 0.5, 0.5, 0.5 };
+    constexpr Colour warning_colour { 1, 0, 0.2 };
+    constexpr double warning_distance = 100;
 
 }
 

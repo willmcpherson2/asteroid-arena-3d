@@ -1,6 +1,7 @@
 #include "arena.h"
 #include "parameters.h"
 #include "world.h"
+#include <cmath>
 
 static Object make_wall(double x_theta, double y_theta)
 {
@@ -28,10 +29,10 @@ static Object make_wall(double x_theta, double y_theta)
 }
 
 Arena::Arena()
-    : top_wall(make_wall(0, 270))
-    , bottom_wall(make_wall(0, 90))
-    , left_wall(make_wall(270, 0))
-    , right_wall(make_wall(90, 0))
+    : top_wall(make_wall(270, 0))
+    , bottom_wall(make_wall(90, 0))
+    , left_wall(make_wall(0, 270))
+    , right_wall(make_wall(0, 90))
     , front_wall(make_wall(0, 180))
     , back_wall(make_wall(0, 0))
 {
@@ -39,6 +40,15 @@ Arena::Arena()
 
 void Arena::simulate(const World& world)
 {
+    Vec pos = world.ship.ship.pos;
+    constexpr double bound = (parameters::arena::size - parameters::arena::warning_distance) * 0.5;
+
+    top_colour = pos.y >= bound ? parameters::arena::warning_colour : parameters::arena::colour;
+    bottom_colour = pos.y <= -bound ? parameters::arena::warning_colour : parameters::arena::colour;
+    left_colour = pos.x <= -bound ? parameters::arena::warning_colour : parameters::arena::colour;
+    right_colour = pos.x >= bound ? parameters::arena::warning_colour : parameters::arena::colour;
+    front_colour = pos.z >= bound ? parameters::arena::warning_colour : parameters::arena::colour;
+    back_colour = pos.z <= -bound ? parameters::arena::warning_colour : parameters::arena::colour;
 }
 
 void Arena::draw() const
