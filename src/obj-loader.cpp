@@ -2,7 +2,7 @@
 #include <fstream>
 #include <regex>
 
-std::vector<Vec> load(std::string filename)
+std::vector<Vec> load(const std::string& filename)
 {
     std::ifstream file(filename, std::ios::in);
     std::string s(std::istreambuf_iterator<char> { file }, {});

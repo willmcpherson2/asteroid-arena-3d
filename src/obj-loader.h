@@ -2,4 +2,4 @@
 #include <string>
 #include <vector>
 
-std::vector<Vec> load(std::string filename);
+std::vector<Vec> load(const std::string& filename);

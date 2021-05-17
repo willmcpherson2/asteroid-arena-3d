@@ -64,7 +64,7 @@ Arena::Arena()
 {
 }
 
-std::vector<Vec> Arena::make_wall(double x_theta, double y_theta)
+Object Arena::make_wall(double x_theta, double y_theta)
 {
     std::vector<Vec> wall;
 
@@ -86,43 +86,26 @@ std::vector<Vec> Arena::make_wall(double x_theta, double y_theta)
         wall.push_back(right);
     }
 
-    return wall;
+    return Object(wall);
 }
 
 void Arena::draw() const
 {
-    glColor3d(0.5, 0.5, 0.5);
+    DrawType draw_type = DrawType::Lines;
+    Colour colour { 0.5, 0.5, 0.5 };
 
-    glPushMatrix();
-
-    glBegin(GL_LINES);
-    for (Vec v : m_top) {
-        v.draw();
-    }
-    for (Vec v : m_bottom) {
-        v.draw();
-    }
-    for (Vec v : m_left) {
-        v.draw();
-    }
-    for (Vec v : m_right) {
-        v.draw();
-    }
-    for (Vec v : m_front) {
-        v.draw();
-    }
-    for (Vec v : m_back) {
-        v.draw();
-    }
-    glEnd();
-
-    glPopMatrix();
+    m_top.draw(draw_type, colour);
+    m_bottom.draw(draw_type, colour);
+    m_left.draw(draw_type, colour);
+    m_right.draw(draw_type, colour);
+    m_front.draw(draw_type, colour);
+    m_back.draw(draw_type, colour);
 }
 
 // Ship
 
 Ship::Ship()
-    : m_model(load("models/point-cube.obj"))
+    : m_ship(load("models/point-cube.obj"))
 {
 }
 
@@ -130,74 +113,90 @@ void Ship::simulate(int delta, Input input)
 {
     double x_delta = delta * input_mouse_sensitivity * input.mouse_delta_x();
     double y_delta = delta * input_mouse_sensitivity * input.mouse_delta_y();
+    m_ship.look(x_delta, y_delta);
 
     if (input.forward()) {
-        m_pos = m_pos + m_z * ship_speed * delta;
+        double forward_delta = ship_speed * delta;
+        m_ship.forward(forward_delta);
     }
-
-    bool up_vector_top_hemisphere = m_y.theta({ 0, 1, 0 }) < 90;
-    x_delta = up_vector_top_hemisphere ? x_delta : -x_delta;
-
-    m_x = m_x.rotate_y(x_delta);
-    m_y = m_y.rotate_y(x_delta);
-    m_z = m_z.rotate_y(x_delta);
-    m_z = m_z.rotate(m_x, y_delta);
-    m_y = m_y.rotate(m_x, y_delta);
-
-    assert(near(m_x.theta(m_y), 90));
-    assert(near(m_x.theta(m_z), 90));
-    assert(near(m_y.theta(m_z), 90));
 }
 
 void Ship::draw() const
 {
-    draw_camera();
-    draw_ship();
+    Object camera = m_ship;
+    camera.forward(-4);
+    camera.draw_camera(m_ship.pos);
+
+    m_ship.draw(DrawType::Triangles, { 1, 1, 1 });
 }
 
-void Ship::draw_camera() const
+// Object
+
+Object::Object(std::vector<Vec> model)
+    : model(model)
 {
-    Vec camera_pos = m_pos + m_z * -4;
-    gluLookAt(camera_pos.x, camera_pos.y, camera_pos.z, m_pos.x, m_pos.y, m_pos.z, m_y.x, m_y.y, m_y.z);
+}
+
+void Object::draw_camera(Vec focus) const
+{
+    gluLookAt(pos.x, pos.y, pos.z, focus.x, focus.y, focus.z, y.x, y.y, y.z);
 
     glMatrixMode(GL_MODELVIEW);
 }
 
-void Ship::draw_ship() const
+void Object::draw(DrawType draw_type, Colour colour) const
 {
+    glColor3d(colour.r, colour.g, colour.b);
+
     glPushMatrix();
 
-    Vec tilt_axis = m_z.flatten_y().cross(m_z);
-    double tilt_rotation = m_z.flatten_y().theta(m_z);
+    Vec tilt_axis = z.flatten_y().cross(z);
+    double tilt_rotation = z.flatten_y().theta(z);
     glRotated(tilt_rotation, tilt_axis.x, tilt_axis.y, tilt_axis.z);
 
-    double spin_theta = m_z.flatten_y().theta({ 0, 0, 1 });
-    double spin_rotation = m_z.x >= 0 ? spin_theta : -spin_theta;
+    double spin_theta = z.flatten_y().theta({ 0, 0, 1 });
+    double spin_rotation = z.x >= 0 ? spin_theta : -spin_theta;
     glRotated(spin_rotation, 0, 1, 0);
 
-    double flip_rotation = m_y.y >= 0 ? 0 : 180;
+    double flip_rotation = y.y >= 0 ? 0 : 180;
     glRotated(flip_rotation, 1, 0, 0);
     glRotated(flip_rotation, 0, 1, 0);
 
-    glLineWidth(4);
+    switch (draw_type) {
+    case DrawType::Triangles:
+        glBegin(GL_TRIANGLES);
+        break;
+    case DrawType::Lines:
+        glBegin(GL_LINES);
+        break;
+    }
 
-    glBegin(GL_LINES);
-
-    glColor3d(0, 0, 1);
-    Vec {}.draw();
-    Vec { 1, 0, 0 }.draw();
-
-    glColor3d(0, 1, 0);
-    Vec {}.draw();
-    Vec { 0, 1, 0 }.draw();
-
-    glColor3d(1, 0, 0);
-    Vec {}.draw();
-    Vec { 0, 0, 1 }.draw();
+    for (Vec v : model) {
+        v.draw();
+    }
 
     glEnd();
 
-    glLineWidth(1);
-
     glPopMatrix();
+}
+
+void Object::look(double x_delta, double y_delta)
+{
+    bool up_vector_top_hemisphere = y.theta({ 0, 1, 0 }) < 90;
+    x_delta = up_vector_top_hemisphere ? x_delta : -x_delta;
+
+    x = x.rotate_y(x_delta);
+    y = y.rotate_y(x_delta);
+    z = z.rotate_y(x_delta);
+    z = z.rotate(x, y_delta);
+    y = y.rotate(x, y_delta);
+
+    assert(near(x.theta(y), 90));
+    assert(near(x.theta(z), 90));
+    assert(near(y.theta(z), 90));
+}
+
+void Object::forward(double delta)
+{
+    pos = pos + z * delta;
 }

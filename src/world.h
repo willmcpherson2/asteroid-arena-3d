@@ -6,6 +6,32 @@
 #include "parameters.h"
 #include <vector>
 
+struct Colour {
+    double r { 0 };
+    double g { 0 };
+    double b { 0 };
+};
+
+enum class DrawType {
+    Triangles,
+    Lines,
+};
+
+struct Object {
+    Object(std::vector<Vec> model);
+    void draw(DrawType draw_type, Colour colour) const;
+    void draw_camera(Vec focus) const;
+
+    void look(double x_delta, double y_delta);
+    void forward(double delta);
+
+    std::vector<Vec> model;
+    Vec pos;
+    Vec x { 1, 0, 0 };
+    Vec y { 0, 1, 0 };
+    Vec z { 0, 0, 1 };
+};
+
 class Arena {
 public:
     Arena();
@@ -13,14 +39,14 @@ public:
     void simulate(int delta, Input input);
 
 private:
-    static std::vector<Vec> make_wall(double x_theta, double y_theta);
+    static Object make_wall(double x_theta, double y_theta);
 
-    std::vector<Vec> m_top;
-    std::vector<Vec> m_bottom;
-    std::vector<Vec> m_left;
-    std::vector<Vec> m_right;
-    std::vector<Vec> m_front;
-    std::vector<Vec> m_back;
+    Object m_top;
+    Object m_bottom;
+    Object m_left;
+    Object m_right;
+    Object m_front;
+    Object m_back;
 };
 
 class Ship {
@@ -30,15 +56,7 @@ public:
     void simulate(int delta, Input input);
 
 private:
-    void draw_ship() const;
-    void draw_camera() const;
-
-    Vec m_pos { 0, 0, 0 };
-    Vec m_x { 1, 0, 0 };
-    Vec m_y { 0, 1, 0 };
-    Vec m_z { 0, 0, 1 };
-
-    std::vector<Vec> m_model;
+    Object m_ship;
 };
 
 class World {
