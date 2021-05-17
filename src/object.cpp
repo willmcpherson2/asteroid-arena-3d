@@ -19,6 +19,8 @@ void Object::draw(DrawType draw_type, Colour colour) const
 
     glPushMatrix();
 
+    glTranslated(pos.x, pos.y, pos.z);
+
     Vec tilt_axis = z.flatten_y().cross(z);
     double tilt_rotation = z.flatten_y().theta(z);
     glRotated(tilt_rotation, tilt_axis.x, tilt_axis.y, tilt_axis.z);
