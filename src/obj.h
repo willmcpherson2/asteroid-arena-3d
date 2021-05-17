@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace Obj {
+namespace obj {
 
 std::vector<Vec> load(const std::string& filename);
 

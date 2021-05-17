@@ -4,7 +4,7 @@
 #include "world.h"
 
 Ship::Ship()
-    : ship(Obj::load("models/point-cube.obj"))
+    : ship(obj::load("models/point-cube.obj"))
 {
 }
 
