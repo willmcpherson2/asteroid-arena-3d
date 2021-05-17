@@ -30,7 +30,7 @@ static void world_coordinates()
     glViewport(view_x, view_y, view_width, view_height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(view_fov, view_ratio, view_near_plane, view_distance);
+    gluPerspective(parameters::view::fov, parameters::view::ratio, parameters::view::near_plane, parameters::view::distance);
 }
 
 void World::simulate(int delta, Input input)

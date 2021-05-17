@@ -6,17 +6,17 @@ static Object make_wall(double x_theta, double y_theta)
 {
     std::vector<Vec> wall;
 
-    constexpr int grid_square_size = arena_size / arena_grid_divisions;
+    constexpr int grid_square_size = parameters::arena::size / parameters::arena::grid_divisions;
 
-    for (int int_i = 0; int_i <= arena_size; int_i += grid_square_size) {
+    for (int int_i = 0; int_i <= parameters::arena::size; int_i += grid_square_size) {
         double i = static_cast<double>(int_i);
 
-        constexpr double offset = static_cast<double>(arena_size) * 0.5;
+        constexpr double offset = static_cast<double>(parameters::arena::size) * 0.5;
 
         Vec top = (Vec { i, 0, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
-        Vec bottom = (Vec { i, arena_size, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
+        Vec bottom = (Vec { i, parameters::arena::size, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
         Vec left = (Vec { 0, i, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
-        Vec right = (Vec { arena_size, i, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
+        Vec right = (Vec { parameters::arena::size, i, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
 
         wall.push_back(top);
         wall.push_back(bottom);

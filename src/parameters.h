@@ -3,29 +3,41 @@
 
 #include "object.h"
 
-// Input
+namespace parameters {
 
-constexpr unsigned char input_forward = 'w';
-constexpr unsigned char input_back = 's';
-constexpr unsigned char input_left = 'a';
-constexpr unsigned char input_right = 'd';
-constexpr double input_mouse_sensitivity = 0.01;
+namespace input {
 
-// View
+    constexpr unsigned char forward = 'w';
+    constexpr unsigned char back = 's';
+    constexpr unsigned char left = 'a';
+    constexpr unsigned char right = 'd';
+    constexpr double mouse_sensitivity = 0.01;
 
-constexpr double view_fov = 90;
-constexpr double view_ratio = 1;
-constexpr double view_distance = 1000;
-constexpr double view_near_plane = 0.1;
+}
 
-// Arena
+namespace view {
 
-constexpr int arena_size = 240;
-constexpr int arena_grid_divisions = 10;
-constexpr Colour arena_colour { 0.5, 0.5, 0.5 };
+    constexpr double fov = 90;
+    constexpr double ratio = 1;
+    constexpr double distance = 1000;
+    constexpr double near_plane = 0.1;
 
-// Ship
+}
 
-constexpr double ship_speed = 0.04;
+namespace arena {
+
+    constexpr int size = 240;
+    constexpr int grid_divisions = 10;
+    constexpr Colour colour { 0.5, 0.5, 0.5 };
+
+}
+
+namespace ship {
+
+    constexpr double speed = 0.04;
+
+}
+
+}
 
 #endif

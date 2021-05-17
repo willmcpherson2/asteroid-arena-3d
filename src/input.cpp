@@ -18,19 +18,19 @@ void Input::handle_key(int key, bool down)
     m_any = down;
 
     switch (key) {
-    case input_forward:
+    case parameters::input::forward:
         m_forward = down;
         m_forward_is_current = down;
         break;
-    case input_back:
+    case parameters::input::back:
         m_back = down;
         m_forward_is_current = !down;
         break;
-    case input_left:
+    case parameters::input::left:
         m_left = down;
         m_left_is_current = down;
         break;
-    case input_right:
+    case parameters::input::right:
         m_right = down;
         m_left_is_current = !down;
         break;

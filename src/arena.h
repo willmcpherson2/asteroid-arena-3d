@@ -19,12 +19,12 @@ struct Arena {
     Object front_wall;
     Object back_wall;
 
-    Colour top_colour { arena_colour };
-    Colour bottom_colour { arena_colour };
-    Colour left_colour { arena_colour };
-    Colour right_colour { arena_colour };
-    Colour front_colour { arena_colour };
-    Colour back_colour { arena_colour };
+    Colour top_colour { parameters::arena::colour };
+    Colour bottom_colour { parameters::arena::colour };
+    Colour left_colour { parameters::arena::colour };
+    Colour right_colour { parameters::arena::colour };
+    Colour front_colour { parameters::arena::colour };
+    Colour back_colour { parameters::arena::colour };
 };
 
 #endif
