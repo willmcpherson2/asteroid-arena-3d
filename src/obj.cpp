@@ -1,4 +1,4 @@
-#include "obj-loader.h"
+#include "obj.h"
 #include <fstream>
 #include <regex>
 

@@ -1,5 +1,5 @@
 #include "ship.h"
-#include "obj-loader.h"
+#include "obj.h"
 #include "parameters.h"
 
 Ship::Ship()
