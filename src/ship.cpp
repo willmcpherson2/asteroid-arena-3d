@@ -3,7 +3,7 @@
 #include "parameters.h"
 
 Ship::Ship()
-    : m_ship(load("models/point-cube.obj"))
+    : m_ship(Obj::load("models/point-cube.obj"))
 {
 }
 
