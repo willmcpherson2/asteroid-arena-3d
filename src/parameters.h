@@ -1,6 +1,8 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
+#include "object.h"
+
 // Input
 
 constexpr unsigned char input_forward = 'w';
@@ -20,6 +22,7 @@ constexpr double view_near_plane = 0.1;
 
 constexpr int arena_size = 240;
 constexpr int arena_grid_divisions = 10;
+constexpr Colour arena_colour { 0.5, 0.5, 0.5 };
 
 // Ship
 

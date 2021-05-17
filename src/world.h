@@ -5,20 +5,15 @@
 #include "input.h"
 #include "ship.h"
 
-class World {
-public:
+struct World {
     void draw() const;
     void simulate(int delta, Input input);
 
-private:
-    static void screen_coordinates();
-    static void world_coordinates();
+    int delta { 0 };
+    Input input;
 
-    int m_delta { 0 };
-    Input m_input;
-
-    Ship m_ship;
-    Arena m_arena;
+    Ship ship;
+    Arena arena;
 };
 
 #endif

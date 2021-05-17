@@ -3,22 +3,28 @@
 
 #include "input.h"
 #include "object.h"
+#include "parameters.h"
 
-class Arena {
-public:
+struct World;
+
+struct Arena {
     Arena();
     void draw() const;
-    void simulate(int delta, Input input);
+    void simulate(const World& world);
 
-private:
-    static Object make_wall(double x_theta, double y_theta);
+    Object top_wall;
+    Object bottom_wall;
+    Object left_wall;
+    Object right_wall;
+    Object front_wall;
+    Object back_wall;
 
-    Object m_top;
-    Object m_bottom;
-    Object m_left;
-    Object m_right;
-    Object m_front;
-    Object m_back;
+    Colour top_colour { arena_colour };
+    Colour bottom_colour { arena_colour };
+    Colour left_colour { arena_colour };
+    Colour right_colour { arena_colour };
+    Colour front_colour { arena_colour };
+    Colour back_colour { arena_colour };
 };
 
 #endif

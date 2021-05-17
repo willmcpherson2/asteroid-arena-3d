@@ -2,22 +2,7 @@
 #include "parameters.h"
 #include <GLUT/glut.h>
 
-void World::simulate(int delta, Input input)
-{
-    m_delta = delta;
-    m_input = input;
-
-    m_ship.simulate(delta, input);
-}
-
-void World::draw() const
-{
-    world_coordinates();
-    m_ship.draw();
-    m_arena.draw();
-}
-
-void World::screen_coordinates()
+static void screen_coordinates()
 {
     int width = glutGet(GLUT_WINDOW_WIDTH);
     int height = glutGet(GLUT_WINDOW_HEIGHT);
@@ -27,7 +12,7 @@ void World::screen_coordinates()
     glViewport(0, 0, width, height);
 }
 
-void World::world_coordinates()
+static void world_coordinates()
 {
     int width = glutGet(GLUT_WINDOW_WIDTH);
     int height = glutGet(GLUT_WINDOW_HEIGHT);
@@ -46,4 +31,20 @@ void World::world_coordinates()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(view_fov, view_ratio, view_near_plane, view_distance);
+}
+
+void World::simulate(int delta, Input input)
+{
+    this->delta = delta;
+    this->input = input;
+
+    arena.simulate(*this);
+    ship.simulate(*this);
+}
+
+void World::draw() const
+{
+    world_coordinates();
+    ship.draw();
+    arena.draw();
 }

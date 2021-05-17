@@ -1,17 +1,8 @@
 #include "arena.h"
 #include "parameters.h"
+#include "world.h"
 
-Arena::Arena()
-    : m_top(make_wall(0, 270))
-    , m_bottom(make_wall(0, 90))
-    , m_left(make_wall(270, 0))
-    , m_right(make_wall(90, 0))
-    , m_front(make_wall(0, 180))
-    , m_back(make_wall(0, 0))
-{
-}
-
-Object Arena::make_wall(double x_theta, double y_theta)
+static Object make_wall(double x_theta, double y_theta)
 {
     std::vector<Vec> wall;
 
@@ -36,15 +27,28 @@ Object Arena::make_wall(double x_theta, double y_theta)
     return Object(wall);
 }
 
+Arena::Arena()
+    : top_wall(make_wall(0, 270))
+    , bottom_wall(make_wall(0, 90))
+    , left_wall(make_wall(270, 0))
+    , right_wall(make_wall(90, 0))
+    , front_wall(make_wall(0, 180))
+    , back_wall(make_wall(0, 0))
+{
+}
+
+void Arena::simulate(const World& world)
+{
+}
+
 void Arena::draw() const
 {
     DrawType draw_type = DrawType::Lines;
-    Colour colour { 0.5, 0.5, 0.5 };
 
-    m_top.draw(draw_type, colour);
-    m_bottom.draw(draw_type, colour);
-    m_left.draw(draw_type, colour);
-    m_right.draw(draw_type, colour);
-    m_front.draw(draw_type, colour);
-    m_back.draw(draw_type, colour);
+    top_wall.draw(draw_type, top_colour);
+    bottom_wall.draw(draw_type, bottom_colour);
+    left_wall.draw(draw_type, left_colour);
+    right_wall.draw(draw_type, right_colour);
+    front_wall.draw(draw_type, front_colour);
+    back_wall.draw(draw_type, back_colour);
 }

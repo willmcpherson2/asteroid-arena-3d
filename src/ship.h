@@ -4,14 +4,14 @@
 #include "input.h"
 #include "object.h"
 
-class Ship {
-public:
+struct World;
+
+struct Ship {
     Ship();
     void draw() const;
-    void simulate(int delta, Input input);
+    void simulate(const World& world);
 
-private:
-    Object m_ship;
+    Object ship;
 };
 
 #endif

@@ -1,29 +1,30 @@
 #include "ship.h"
 #include "obj.h"
 #include "parameters.h"
+#include "world.h"
 
 Ship::Ship()
-    : m_ship(Obj::load("models/point-cube.obj"))
+    : ship(Obj::load("models/point-cube.obj"))
 {
 }
 
-void Ship::simulate(int delta, Input input)
+void Ship::simulate(const World& world)
 {
-    double x_delta = delta * input_mouse_sensitivity * input.mouse_delta_x();
-    double y_delta = delta * input_mouse_sensitivity * input.mouse_delta_y();
-    m_ship.look(x_delta, y_delta);
+    double x_delta = world.delta * input_mouse_sensitivity * world.input.mouse_delta_x();
+    double y_delta = world.delta * input_mouse_sensitivity * world.input.mouse_delta_y();
+    ship.look(x_delta, y_delta);
 
-    if (input.forward()) {
-        double forward_delta = ship_speed * delta;
-        m_ship.forward(forward_delta);
+    if (world.input.forward()) {
+        double forward_delta = ship_speed * world.delta;
+        ship.forward(forward_delta);
     }
 }
 
 void Ship::draw() const
 {
-    Object camera = m_ship;
+    Object camera = ship;
     camera.forward(-4);
-    camera.draw_camera(m_ship.pos);
+    camera.draw_camera(ship.pos);
 
-    m_ship.draw(DrawType::Triangles, { 1, 1, 1 });
+    ship.draw(DrawType::Triangles, { 1, 1, 1 });
 }
