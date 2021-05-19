@@ -21,8 +21,8 @@ void Input::handle_key(int key, bool down)
     case parameters::input::forward:
         m_forward = down;
         break;
-    case 'q':
-    case 27:
+    case parameters::input::quit1:
+    case parameters::input::quit2:
         std::exit(EXIT_SUCCESS);
     }
 }

@@ -8,6 +8,8 @@ namespace parameters {
 namespace input {
 
     constexpr unsigned char forward = 'w';
+    constexpr unsigned char quit1 = 'q';
+    constexpr unsigned char quit2 = 27; // Esc
     constexpr double mouse_sensitivity = 0.01;
 
 }
