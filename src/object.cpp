@@ -91,13 +91,7 @@ void Object::forward(double delta)
 void Model::draw() const
 {
     for (auto shape : shapes) {
-        if (auto s = std::get_if<Line>(&shape)) {
-            s->draw();
-        } else if (auto s = std::get_if<Polygon>(&shape)) {
-            s->draw();
-        } else {
-            assert(false);
-        }
+        std::visit([](const auto& shape) { shape.draw(); }, shape);
     }
 }
 
@@ -109,13 +103,7 @@ void Model::add(Shape shape)
 void Model::set_colour(Colour colour)
 {
     for (auto& shape : shapes) {
-        if (auto s = std::get_if<Line>(&shape)) {
-            s->colour = colour;
-        } else if (auto s = std::get_if<Polygon>(&shape)) {
-            s->colour = colour;
-        } else {
-            assert(false);
-        }
+        std::visit([colour](auto& shape) { shape.colour = colour; }, shape);
     }
 }
 
