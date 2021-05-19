@@ -12,7 +12,7 @@ DEP = $(SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.d)
 
 CPPFLAGS += -MMD
 
-CXXFLAGS += -std=c++14
+CXXFLAGS += -std=c++17
 
 ifeq ($(CXX), g++-10)
 	CXXFLAGS += -Wall \

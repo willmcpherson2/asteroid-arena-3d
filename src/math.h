@@ -289,6 +289,11 @@ struct Vec {
         glVertex3d(x, y, z);
     }
 
+    void draw_normal() const
+    {
+        glNormal3d(x, y, z);
+    }
+
     const double& operator[](size_t i) const
     {
         switch (i) {

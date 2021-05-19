@@ -1,7 +1,7 @@
 #include "object.h"
 #include <GLUT/glut.h>
 
-Object::Object(std::vector<Vec> model)
+Object::Object(Model model)
     : model(model)
 {
 }
@@ -9,13 +9,42 @@ Object::Object(std::vector<Vec> model)
 void Object::draw_camera(Vec focus) const
 {
     gluLookAt(pos.x, pos.y, pos.z, focus.x, focus.y, focus.z, y.x, y.y, y.z);
-
     glMatrixMode(GL_MODELVIEW);
 }
 
-void Object::draw(DrawType draw_type, Colour colour) const
+static void lighting()
 {
-    glColor3d(colour.r, colour.g, colour.b);
+    float pos[] { 0, 20, 0, 0 };
+    glLightfv(GL_LIGHT0, GL_POSITION, pos);
+
+    float ambient[] { 0, 0, 0, 1 };
+    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+
+    float diffuse[] { 1, 1, 1, 1 };
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+
+    float specular[] { 1, 1, 1, 1 };
+    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+
+    float model[] { 0.2f, 0.2f, 0.2f, 1 };
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, model);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR_MATERIAL);
+
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+
+    float specular_material[] { 1, 1, 1, 1 };
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_material);
+
+    float emission_material[] { 0, 0, 0, 1 };
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission_material);
+}
+
+void Object::draw() const
+{
+    lighting();
 
     glPushMatrix();
 
@@ -33,20 +62,7 @@ void Object::draw(DrawType draw_type, Colour colour) const
     glRotated(flip_rotation, 1, 0, 0);
     glRotated(flip_rotation, 0, 1, 0);
 
-    switch (draw_type) {
-    case DrawType::Triangles:
-        glBegin(GL_TRIANGLES);
-        break;
-    case DrawType::Lines:
-        glBegin(GL_LINES);
-        break;
-    }
-
-    for (Vec v : model) {
-        v.draw();
-    }
-
-    glEnd();
+    model.draw();
 
     glPopMatrix();
 }
@@ -70,4 +86,74 @@ void Object::look(double x_delta, double y_delta)
 void Object::forward(double delta)
 {
     pos = pos + z * delta;
+}
+
+void Model::draw() const
+{
+    for (auto shape : shapes) {
+        if (auto s = std::get_if<Line>(&shape)) {
+            s->draw();
+        } else if (auto s = std::get_if<Polygon>(&shape)) {
+            s->draw();
+        }
+    }
+}
+
+void Model::add(Shape shape)
+{
+    shapes.push_back(shape);
+}
+
+void Model::set_colour(Colour colour)
+{
+    for (auto& shape : shapes) {
+        if (auto s = std::get_if<Line>(&shape)) {
+            s->colour = colour;
+        } else if (auto s = std::get_if<Polygon>(&shape)) {
+            s->colour = colour;
+        }
+    }
+}
+
+void Line::draw() const
+{
+    colour.draw();
+
+    glBegin(GL_LINES);
+    for (auto v : vertices) {
+        v.draw();
+    }
+    glEnd();
+}
+
+void Line::add(Vec vertex)
+{
+    vertices.push_back(vertex);
+}
+
+void Polygon::add(Vec vertex, Vec normal)
+{
+    vertices.push_back(vertex);
+    normals.push_back(normal);
+}
+
+void Polygon::draw() const
+{
+    assert(vertices.size() == normals.size());
+
+    colour.draw();
+
+    glBegin(GL_POLYGON);
+    for (size_t i = 0; i < vertices.size(); ++i) {
+        Vec normal = normals[i];
+        Vec vertex = vertices[i];
+        normal.draw_normal();
+        vertex.draw();
+    }
+    glEnd();
+}
+
+void Colour::draw() const
+{
+    glColor3d(r, g, b);
 }

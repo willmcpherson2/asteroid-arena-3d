@@ -4,7 +4,7 @@
 #include "world.h"
 
 Ship::Ship()
-    : ship(obj::load("models/point-cube.obj"))
+    : ship(obj::load("models/ship.obj"))
 {
 }
 
@@ -26,5 +26,5 @@ void Ship::draw() const
     camera.forward(-parameters::ship::camera_distance);
     camera.draw_camera(ship.pos);
 
-    ship.draw(DrawType::Triangles, { 1, 1, 1 });
+    ship.draw();
 }

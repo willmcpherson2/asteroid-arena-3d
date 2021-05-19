@@ -3,9 +3,9 @@
 #include "world.h"
 #include <cmath>
 
-static Object make_wall(double x_theta, double y_theta)
+static Model make_wall(double x_theta, double y_theta)
 {
-    std::vector<Vec> wall;
+    Model wall;
 
     constexpr int grid_square_size = parameters::arena::size / parameters::arena::grid_divisions;
 
@@ -19,13 +19,18 @@ static Object make_wall(double x_theta, double y_theta)
         Vec left = (Vec { 0, i, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
         Vec right = (Vec { parameters::arena::size, i, 0 } - offset).rotate_x(x_theta).rotate_y(y_theta);
 
-        wall.push_back(top);
-        wall.push_back(bottom);
-        wall.push_back(left);
-        wall.push_back(right);
+        Line top_bottom;
+        top_bottom.add(top);
+        top_bottom.add(bottom);
+        wall.add(top_bottom);
+
+        Line left_right;
+        left_right.add(left);
+        left_right.add(right);
+        wall.add(left_right);
     }
 
-    return Object(wall);
+    return wall;
 }
 
 Arena::Arena()
@@ -43,22 +48,20 @@ void Arena::simulate(const World& world)
     Vec pos = world.ship.ship.pos;
     constexpr double bound = (parameters::arena::size - parameters::arena::warning_distance) * 0.5;
 
-    top_colour = pos.y >= bound ? parameters::arena::warning_colour : parameters::arena::colour;
-    bottom_colour = pos.y <= -bound ? parameters::arena::warning_colour : parameters::arena::colour;
-    left_colour = pos.x <= -bound ? parameters::arena::warning_colour : parameters::arena::colour;
-    right_colour = pos.x >= bound ? parameters::arena::warning_colour : parameters::arena::colour;
-    front_colour = pos.z >= bound ? parameters::arena::warning_colour : parameters::arena::colour;
-    back_colour = pos.z <= -bound ? parameters::arena::warning_colour : parameters::arena::colour;
+    top_wall.set_colour(pos.y >= bound ? parameters::arena::warning_colour : parameters::arena::colour);
+    bottom_wall.set_colour(pos.y <= -bound ? parameters::arena::warning_colour : parameters::arena::colour);
+    left_wall.set_colour(pos.x <= -bound ? parameters::arena::warning_colour : parameters::arena::colour);
+    right_wall.set_colour(pos.x >= bound ? parameters::arena::warning_colour : parameters::arena::colour);
+    front_wall.set_colour(pos.z >= bound ? parameters::arena::warning_colour : parameters::arena::colour);
+    back_wall.set_colour(pos.z <= -bound ? parameters::arena::warning_colour : parameters::arena::colour);
 }
 
 void Arena::draw() const
 {
-    DrawType draw_type = DrawType::Lines;
-
-    top_wall.draw(draw_type, top_colour);
-    bottom_wall.draw(draw_type, bottom_colour);
-    left_wall.draw(draw_type, left_colour);
-    right_wall.draw(draw_type, right_colour);
-    front_wall.draw(draw_type, front_colour);
-    back_wall.draw(draw_type, back_colour);
+    top_wall.draw();
+    bottom_wall.draw();
+    left_wall.draw();
+    right_wall.draw();
+    front_wall.draw();
+    back_wall.draw();
 }
