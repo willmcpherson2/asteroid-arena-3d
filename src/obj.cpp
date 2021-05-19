@@ -4,7 +4,7 @@
 
 Model obj::load(const std::string& filename)
 {
-    static std::string number("[-|+]?\\d+\\.\\d+");
+    static std::string number("-?\\d+\\.\\d+");
     static std::string integer("\\d+");
     static std::string vertex_element(number + "\\s");
     static std::string face_element(integer + "//" + integer + "\\s");
