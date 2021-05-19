@@ -8,9 +8,6 @@ namespace parameters {
 namespace input {
 
     constexpr unsigned char forward = 'w';
-    constexpr unsigned char back = 's';
-    constexpr unsigned char left = 'a';
-    constexpr unsigned char right = 'd';
     constexpr double mouse_sensitivity = 0.01;
 
 }

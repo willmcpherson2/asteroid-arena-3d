@@ -45,11 +45,6 @@ static void keyboard_up(unsigned char key, int, int)
     g_input.handle_key(key, false);
 }
 
-static void mouse_click(int, int state, int, int)
-{
-    g_input.handle_mouse_click(state == GLUT_DOWN);
-}
-
 static void mouse_move(int, int)
 {
     int delta_x = 0;
@@ -80,7 +75,6 @@ int main(int argc, char** argv)
     glutIgnoreKeyRepeat(1);
     glutKeyboardFunc(keyboard);
     glutKeyboardUpFunc(keyboard_up);
-    glutMouseFunc(mouse_click);
     glutMotionFunc(mouse_move);
     glutPassiveMotionFunc(mouse_move);
     glutMainLoop();

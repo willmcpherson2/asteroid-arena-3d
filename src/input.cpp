@@ -20,29 +20,11 @@ void Input::handle_key(int key, bool down)
     switch (key) {
     case parameters::input::forward:
         m_forward = down;
-        m_forward_is_current = down;
-        break;
-    case parameters::input::back:
-        m_back = down;
-        m_forward_is_current = !down;
-        break;
-    case parameters::input::left:
-        m_left = down;
-        m_left_is_current = down;
-        break;
-    case parameters::input::right:
-        m_right = down;
-        m_left_is_current = !down;
         break;
     case 'q':
     case 27:
         std::exit(EXIT_SUCCESS);
     }
-}
-
-void Input::handle_mouse_click(bool down)
-{
-    m_mouse = down;
 }
 
 void Input::handle_mouse_move(int delta_x, int delta_y)
