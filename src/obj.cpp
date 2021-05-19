@@ -9,11 +9,13 @@ Model obj::load(const std::string& filename)
     static std::string vertex_element(number + "\\s");
     static std::string face_element(integer + "//" + integer + "\\s");
     static std::string vertex("v (" + vertex_element + ")*");
+    static std::string normal("vn (" + vertex_element + ")*");
     static std::string face("f (" + face_element + ")*");
 
     static std::regex number_re(number);
     static std::regex integer_re(integer);
     static std::regex vertex_re(vertex);
+    static std::regex normal_re(normal);
     static std::regex face_element_re(face_element);
     static std::regex face_re(face);
 
@@ -45,6 +47,23 @@ Model obj::load(const std::string& filename)
         vertex_list.push_back(v);
     }
 
+    std::vector<Vec> normal_list;
+
+    for (auto normal_it = regex_it(text, normal_re); !regex_it_end(normal_it); ++normal_it) {
+        auto normal_match = normal_it->str();
+
+        auto number_it = regex_it(normal_match, number_re);
+
+        auto x = std::stod(number_it->str());
+        ++number_it;
+        auto y = std::stod(number_it->str());
+        ++number_it;
+        auto z = std::stod(number_it->str());
+
+        Vec v { x, y, z };
+        normal_list.push_back(v);
+    }
+
     Model model;
 
     for (auto face_it = regex_it(text, face_re); !regex_it_end(face_it); ++face_it) {
@@ -62,7 +81,7 @@ Model obj::load(const std::string& filename)
             ++integer_it;
 
             size_t normal_index = std::stoull(integer_it->str()) - 1;
-            Vec normal = vertex_list[normal_index];
+            Vec normal = normal_list[normal_index];
 
             p.add(vertex, normal);
         }
