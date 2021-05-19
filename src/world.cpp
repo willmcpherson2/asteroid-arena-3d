@@ -2,7 +2,7 @@
 #include "parameters.h"
 #include <GLUT/glut.h>
 
-static void screen_coordinates()
+[[maybe_unused]] static void screen_coordinates()
 {
     int width = glutGet(GLUT_WINDOW_WIDTH);
     int height = glutGet(GLUT_WINDOW_HEIGHT);
