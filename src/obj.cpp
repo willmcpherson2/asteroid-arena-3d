@@ -4,33 +4,33 @@
 
 Model obj::load(const std::string& filename)
 {
-    std::ifstream file(filename, std::ios::in);
-    std::string s(std::istreambuf_iterator<char> { file }, {});
+    static std::string number("[-|+]?\\d+\\.\\d+");
+    static std::string integer("\\d+");
+    static std::string vertex_element(number + "\\s");
+    static std::string face_element(integer + "//" + integer + "\\s");
+    static std::string vertex("v (" + vertex_element + ")*");
+    static std::string face("f (" + face_element + ")*");
 
-    std::string number("[-|+]?\\d+\\.\\d+");
-    std::string integer("\\d+");
-    std::string vertex_element(number + "\\s");
-    std::string face_element(integer + "//" + integer + "\\s");
-    std::string vertex("v (" + vertex_element + ")*");
-    std::string face("f (" + face_element + ")*");
+    static std::regex number_re(number);
+    static std::regex integer_re(integer);
+    static std::regex vertex_re(vertex);
+    static std::regex face_element_re(face_element);
+    static std::regex face_re(face);
 
-    std::regex number_re(number);
-    std::regex integer_re(integer);
-    std::regex vertex_re(vertex);
-    std::regex face_element_re(face_element);
-    std::regex face_re(face);
-
-    std::vector<Vec> vertex_list;
-
-    auto regex_it = [](const auto& s, const auto& re) {
-        return std::sregex_iterator(s.begin(), s.end(), re);
+    static auto regex_it = [](const auto& text, const auto& re) {
+        return std::sregex_iterator(text.begin(), text.end(), re);
     };
 
-    auto regex_it_end = [](const auto& it) {
+    static auto regex_it_end = [](const auto& it) {
         return it == std::sregex_iterator();
     };
 
-    for (auto vertex_it = regex_it(s, vertex_re); !regex_it_end(vertex_it); ++vertex_it) {
+    std::ifstream file(filename, std::ios::in);
+    std::string text(std::istreambuf_iterator<char> { file }, {});
+
+    std::vector<Vec> vertex_list;
+
+    for (auto vertex_it = regex_it(text, vertex_re); !regex_it_end(vertex_it); ++vertex_it) {
         auto vertex_match = vertex_it->str();
 
         auto number_it = regex_it(vertex_match, number_re);
@@ -47,7 +47,7 @@ Model obj::load(const std::string& filename)
 
     Model model;
 
-    for (auto face_it = regex_it(s, face_re); !regex_it_end(face_it); ++face_it) {
+    for (auto face_it = regex_it(text, face_re); !regex_it_end(face_it); ++face_it) {
         auto face_match = face_it->str();
 
         Polygon p;
