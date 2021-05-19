@@ -43,6 +43,8 @@ Model obj::load(const std::string& filename)
         ++number_it;
         auto z = std::stod(number_it->str());
 
+        assert(regex_it_end(++number_it));
+
         Vec v { x, y, z };
         vertex_list.push_back(v);
     }
@@ -59,6 +61,8 @@ Model obj::load(const std::string& filename)
         auto y = std::stod(number_it->str());
         ++number_it;
         auto z = std::stod(number_it->str());
+
+        assert(regex_it_end(++number_it));
 
         Vec v { x, y, z };
         normal_list.push_back(v);
@@ -77,11 +81,15 @@ Model obj::load(const std::string& filename)
             auto integer_it = regex_it(face_element_match, integer_re);
 
             size_t vertex_index = std::stoull(integer_it->str()) - 1;
+            assert(vertex_index < vertex_list.size());
             Vec vertex = vertex_list[vertex_index];
             ++integer_it;
 
             size_t normal_index = std::stoull(integer_it->str()) - 1;
+            assert(normal_index < normal_list.size());
             Vec normal = normal_list[normal_index];
+
+            assert(regex_it_end(++integer_it));
 
             p.add(vertex, normal);
         }

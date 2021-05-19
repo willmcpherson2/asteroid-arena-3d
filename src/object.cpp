@@ -95,6 +95,8 @@ void Model::draw() const
             s->draw();
         } else if (auto s = std::get_if<Polygon>(&shape)) {
             s->draw();
+        } else {
+            assert(false);
         }
     }
 }
@@ -111,6 +113,8 @@ void Model::set_colour(Colour colour)
             s->colour = colour;
         } else if (auto s = std::get_if<Polygon>(&shape)) {
             s->colour = colour;
+        } else {
+            assert(false);
         }
     }
 }
