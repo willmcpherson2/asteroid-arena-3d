@@ -119,7 +119,7 @@ void Line::draw() const
 {
     colour.draw();
 
-    glBegin(GL_LINES);
+    glBegin(GL_LINE_LOOP);
     for (auto v : vertices) {
         v.draw();
     }
