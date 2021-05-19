@@ -8,6 +8,7 @@
 struct World {
     void draw() const;
     void simulate(int delta, Input input);
+    void set_lighting() const;
 
     int delta { 0 };
     Input input;

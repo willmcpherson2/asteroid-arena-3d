@@ -69,6 +69,7 @@ int main(int argc, char** argv)
 
     glClearColor(0, 0, 0, 1);
     glutSetCursor(GLUT_CURSOR_NONE);
+    g_world.set_lighting();
 
     glutDisplayFunc(display);
     glutIdleFunc(idle);
