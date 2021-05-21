@@ -2,16 +2,6 @@
 #include "parameters.h"
 #include <GLUT/glut.h>
 
-[[maybe_unused]] static void screen_coordinates()
-{
-    int width = glutGet(GLUT_WINDOW_WIDTH);
-    int height = glutGet(GLUT_WINDOW_HEIGHT);
-
-    glLoadIdentity();
-    gluOrtho2D(0, width, height, 0);
-    glViewport(0, 0, width, height);
-}
-
 static void world_coordinates()
 {
     int width = glutGet(GLUT_WINDOW_WIDTH);
