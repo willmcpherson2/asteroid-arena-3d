@@ -23,8 +23,12 @@ void Ship::simulate(const World& world)
 void Ship::draw() const
 {
     Object camera = ship;
-    camera.forward(-parameters::ship::camera_distance);
+    camera.forward(parameters::ship::camera_distance);
     camera.draw_camera(ship.pos);
+
+    Object light = ship;
+    light.forward(parameters::ship::light_distance);
+    light.draw_light();
 
     ship.draw();
 }

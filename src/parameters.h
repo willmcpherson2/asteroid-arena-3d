@@ -36,7 +36,8 @@ namespace arena {
 namespace ship {
 
     constexpr double speed = 0.04;
-    constexpr double camera_distance = 4;
+    constexpr double camera_distance = -4;
+    constexpr double light_distance = 0.5;
 
 }
 

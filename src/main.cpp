@@ -11,7 +11,6 @@ static Input g_input;
 static void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);
 
     g_world.draw();
 
@@ -68,8 +67,12 @@ int main(int argc, char** argv)
     // glutFullScreen();
 
     glClearColor(0, 0, 0, 1);
+    glShadeModel(GL_SMOOTH);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_RESCALE_NORMAL);
     glutSetCursor(GLUT_CURSOR_NONE);
-    g_world.set_lighting();
 
     glutDisplayFunc(display);
     glutIdleFunc(idle);

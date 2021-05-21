@@ -12,12 +12,7 @@ struct Arena {
     void draw() const;
     void simulate(const World& world);
 
-    Model top_wall;
-    Model bottom_wall;
-    Model left_wall;
-    Model right_wall;
-    Model front_wall;
-    Model back_wall;
+    Object arena;
 };
 
 #endif

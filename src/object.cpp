@@ -12,6 +12,17 @@ void Object::draw_camera(Vec focus) const
     glMatrixMode(GL_MODELVIEW);
 }
 
+void Object::draw_light() const
+{
+    float position[] = { static_cast<float>(pos.x), static_cast<float>(pos.y), static_cast<float>(pos.z), 1 };
+    glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+    float spot_direction[] = { static_cast<float>(z.x), static_cast<float>(z.y), static_cast<float>(z.z) };
+    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
+
+    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 45);
+}
+
 void Object::draw() const
 {
     glPushMatrix();
@@ -30,9 +41,42 @@ void Object::draw() const
     glRotated(flip_rotation, 1, 0, 0);
     glRotated(flip_rotation, 0, 1, 0);
 
+    glScaled(size.x, size.y, size.z);
+
     model.draw();
 
     glPopMatrix();
+}
+
+void Object::scale(double size)
+{
+    this->size = this->size * Vec { size, size, size };
+}
+
+void Object::scale(Vec size)
+{
+    this->size = this->size * size;
+}
+
+void Object::rotate(Vec axis, double theta)
+{
+    x = x.rotate(axis, theta);
+    y = y.rotate(axis, theta);
+    z = z.rotate(axis, theta);
+}
+
+void Object::rotate_x(double theta)
+{
+    x = x.rotate_x(theta);
+    y = y.rotate_x(theta);
+    z = z.rotate_x(theta);
+}
+
+void Object::rotate_y(double theta)
+{
+    x = x.rotate_y(theta);
+    y = y.rotate_y(theta);
+    z = z.rotate_y(theta);
 }
 
 void Object::look(double x_delta, double y_delta)
@@ -40,11 +84,8 @@ void Object::look(double x_delta, double y_delta)
     bool up_vector_top_hemisphere = y.theta({ 0, 1, 0 }) < 90;
     x_delta = up_vector_top_hemisphere ? x_delta : -x_delta;
 
-    x = x.rotate_y(x_delta);
-    y = y.rotate_y(x_delta);
-    z = z.rotate_y(x_delta);
-    z = z.rotate(x, y_delta);
-    y = y.rotate(x, y_delta);
+    rotate_y(x_delta);
+    rotate(x, y_delta);
 
     assert(near(x.theta(y), 90));
     assert(near(x.theta(z), 90));
@@ -56,39 +97,30 @@ void Object::forward(double delta)
     pos = pos + z * delta;
 }
 
+void Object::set_colour(Colour colour)
+{
+    for (auto& polygon : model.polygons) {
+        polygon.colour = colour;
+    }
+}
+
+void Object::set_display(Display display)
+{
+    for (auto& polygon : model.polygons) {
+        polygon.display = display;
+    }
+}
+
 void Model::draw() const
 {
-    for (auto shape : shapes) {
-        std::visit([](const auto& shape) { shape.draw(); }, shape);
+    for (auto polygon : polygons) {
+        polygon.draw();
     }
 }
 
-void Model::add(Shape shape)
+void Model::add(Polygon polygon)
 {
-    shapes.push_back(shape);
-}
-
-void Model::set_colour(Colour colour)
-{
-    for (auto& shape : shapes) {
-        std::visit([colour](auto& shape) { shape.colour = colour; }, shape);
-    }
-}
-
-void Line::draw() const
-{
-    colour.draw();
-
-    glBegin(GL_LINE_LOOP);
-    for (auto v : vertices) {
-        v.draw();
-    }
-    glEnd();
-}
-
-void Line::add(Vec vertex)
-{
-    vertices.push_back(vertex);
+    polygons.push_back(polygon);
 }
 
 void Polygon::add(Vec vertex, Vec normal)
@@ -103,13 +135,22 @@ void Polygon::draw() const
 
     colour.draw();
 
-    glBegin(GL_POLYGON);
+    switch (display) {
+    case Display::Solid:
+        glBegin(GL_POLYGON);
+        break;
+    case Display::Outline:
+        glBegin(GL_LINE_LOOP);
+        break;
+    }
+
     for (size_t i = 0; i < vertices.size(); ++i) {
         Vec normal = normals[i];
         Vec vertex = vertices[i];
         normal.draw_normal();
         vertex.draw();
     }
+
     glEnd();
 }
 

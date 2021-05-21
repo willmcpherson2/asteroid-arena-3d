@@ -168,6 +168,12 @@ struct Vec {
         return ::near(a.x, b.x) && ::near(a.y, b.y) && ::near(a.z, b.z);
     }
 
+    Vec operator*(Vec b) const
+    {
+        Vec a = *this;
+        return Vec { a.x * b.x, a.y * b.y, a.z * b.z };
+    }
+
     Vec operator+(Vec b) const
     {
         Vec a = *this;

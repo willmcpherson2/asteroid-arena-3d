@@ -42,36 +42,6 @@ void World::simulate(int delta, Input input)
     ship.simulate(*this);
 }
 
-void World::set_lighting() const
-{
-    float pos[] { 0, 20, 0, 0 };
-    glLightfv(GL_LIGHT0, GL_POSITION, pos);
-
-    float ambient[] { 0, 0, 0, 1 };
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
-
-    float diffuse[] { 1, 1, 1, 1 };
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
-
-    float specular[] { 1, 1, 1, 1 };
-    glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
-
-    float model[] { 0.2f, 0.2f, 0.2f, 1 };
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, model);
-
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_COLOR_MATERIAL);
-
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-
-    float specular_material[] { 1, 1, 1, 1 };
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_material);
-
-    float emission_material[] { 0, 0, 0, 1 };
-    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, emission_material);
-}
-
 void World::draw() const
 {
     world_coordinates();
