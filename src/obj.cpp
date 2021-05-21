@@ -91,7 +91,7 @@ Model obj::load(const std::string& filename)
 
             assert(regex_it_end(++integer_it));
 
-            p.add(vertex, normal);
+            p.add({ vertex, normal });
         }
 
         model.add(p);

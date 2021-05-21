@@ -123,16 +123,13 @@ void Model::add(Polygon polygon)
     polygons.push_back(polygon);
 }
 
-void Polygon::add(Vec vertex, Vec normal)
+void Polygon::add(Vertex vertex)
 {
     vertices.push_back(vertex);
-    normals.push_back(normal);
 }
 
 void Polygon::draw() const
 {
-    assert(vertices.size() == normals.size());
-
     colour.draw();
 
     switch (display) {
@@ -144,14 +141,17 @@ void Polygon::draw() const
         break;
     }
 
-    for (size_t i = 0; i < vertices.size(); ++i) {
-        Vec normal = normals[i];
-        Vec vertex = vertices[i];
-        normal.draw_normal();
+    for (auto vertex : vertices) {
         vertex.draw();
     }
 
     glEnd();
+}
+
+void Vertex::draw() const
+{
+    glNormal3d(normal.x, normal.y, normal.z);
+    vertex.draw();
 }
 
 void Colour::draw() const

@@ -18,12 +18,18 @@ enum class Display {
     Outline,
 };
 
+struct Vertex {
+    Vec vertex;
+    Vec normal;
+
+    void draw() const;
+};
+
 struct Polygon {
     void draw() const;
-    void add(Vec vertex, Vec normal);
+    void add(Vertex vertex);
 
-    std::vector<Vec> vertices;
-    std::vector<Vec> normals;
+    std::vector<Vertex> vertices;
     Colour colour;
     Display display { Display::Solid };
 };
