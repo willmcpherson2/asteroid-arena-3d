@@ -8,19 +8,29 @@ Object::Object(Model model)
 
 void Object::draw_camera(Vec focus) const
 {
+    glMatrixMode(GL_PROJECTION);
     gluLookAt(pos.x, pos.y, pos.z, focus.x, focus.y, focus.z, y.x, y.y, y.z);
     glMatrixMode(GL_MODELVIEW);
 }
 
 void Object::draw_light() const
 {
+    float ambient[] = { 0.5, 0.5, 0.5, 1 };
+    glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
+
+    float diffuse[] = { 0.5, 0.5, 0.5, 1 };
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
+
+    float specular[] = { 0.5, 0.5, 0.5, 1 };
+    glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
+
     float position[] = { static_cast<float>(pos.x), static_cast<float>(pos.y), static_cast<float>(pos.z), 1 };
-    glLightfv(GL_LIGHT0, GL_POSITION, position);
+    glLightfv(GL_LIGHT1, GL_POSITION, position);
 
     float spot_direction[] = { static_cast<float>(z.x), static_cast<float>(z.y), static_cast<float>(z.z) };
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, spot_direction);
+    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
 
-    glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, 45);
+    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45);
 }
 
 void Object::draw() const
@@ -46,6 +56,13 @@ void Object::draw() const
     model.draw();
 
     glPopMatrix();
+}
+
+void Object::move(Vec pos)
+{
+    this->pos = this->pos + x * pos.x;
+    this->pos = this->pos + y * pos.y;
+    this->pos = this->pos + z * pos.z;
 }
 
 void Object::scale(double size)
@@ -92,11 +109,6 @@ void Object::look(double x_delta, double y_delta)
     assert(near(y.theta(z), 90));
 }
 
-void Object::forward(double delta)
-{
-    pos = pos + z * delta;
-}
-
 void Object::set_colour(Colour colour)
 {
     for (auto& polygon : model.polygons) {
@@ -130,8 +142,6 @@ void Polygon::add(Vertex vertex)
 
 void Polygon::draw() const
 {
-    colour.draw();
-
     switch (display) {
     case Display::Solid:
         glBegin(GL_POLYGON);
@@ -150,7 +160,7 @@ void Polygon::draw() const
 
 void Vertex::draw() const
 {
-    glNormal3d(normal.x, normal.y, normal.z);
+    normal.draw_normal();
     vertex.draw();
 }
 

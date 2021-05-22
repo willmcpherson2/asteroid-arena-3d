@@ -48,13 +48,13 @@ struct Object {
     void draw_light() const;
     void draw_camera(Vec focus) const;
 
+    void move(Vec pos);
     void scale(double size);
     void scale(Vec size);
     void rotate(Vec axis, double theta);
     void rotate_x(double theta);
     void rotate_y(double theta);
     void look(double x_delta, double y_delta);
-    void forward(double delta);
     void set_colour(Colour colour);
     void set_display(Display display);
 

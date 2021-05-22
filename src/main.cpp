@@ -70,6 +70,7 @@ int main(int argc, char** argv)
     glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_RESCALE_NORMAL);
     glutSetCursor(GLUT_CURSOR_NONE);

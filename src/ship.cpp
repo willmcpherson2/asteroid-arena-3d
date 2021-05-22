@@ -15,19 +15,19 @@ void Ship::simulate(const World& world)
     ship.look(x_delta, y_delta);
 
     if (world.input.forward()) {
-        double forward_delta = parameters::ship::speed * world.delta;
-        ship.forward(forward_delta);
+        double z_delta = parameters::ship::speed * world.delta;
+        ship.move({ 0, 0, z_delta });
     }
 }
 
 void Ship::draw() const
 {
     Object camera = ship;
-    camera.forward(parameters::ship::camera_distance);
+    camera.move(parameters::ship::camera_pos);
     camera.draw_camera(ship.pos);
 
     Object light = ship;
-    light.forward(parameters::ship::light_distance);
+    light.move(parameters::ship::light_pos);
     light.draw_light();
 
     ship.draw();

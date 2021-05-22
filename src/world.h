@@ -3,6 +3,7 @@
 
 #include "arena.h"
 #include "input.h"
+#include "light.h"
 #include "ship.h"
 
 struct World {
@@ -13,6 +14,7 @@ struct World {
     int delta { 0 };
     Input input;
 
+    Light light;
     Ship ship;
     Arena arena;
 };

@@ -1,4 +1,5 @@
 #include "world.h"
+#include "obj.h"
 #include "parameters.h"
 #include <GLUT/glut.h>
 
@@ -21,6 +22,7 @@ static void world_coordinates()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(parameters::view::fov, parameters::view::ratio, parameters::view::near_plane, parameters::view::distance);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void World::simulate(int delta, Input input)
@@ -35,6 +37,7 @@ void World::simulate(int delta, Input input)
 void World::draw() const
 {
     world_coordinates();
+    light.draw();
     ship.draw();
     arena.draw();
 }
