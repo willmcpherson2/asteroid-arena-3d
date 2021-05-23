@@ -3,7 +3,83 @@
 #include <sstream>
 #include <unordered_map>
 
-Model obj::load(const std::string& filename)
+static Colour colour(std::istream_iterator<std::string>& word_it)
+{
+    auto r = std::stod(*word_it);
+    ++word_it;
+    auto g = std::stod(*word_it);
+    ++word_it;
+    auto b = std::stod(*word_it);
+
+    return { r, g, b };
+}
+
+static std::unordered_map<std::string, Material> load_mtl(const std::string& filename)
+{
+    enum class Keyword {
+        Material,
+        Ambient,
+        Diffuse,
+        Specular,
+        Emmissive,
+    };
+
+    static std::unordered_map<std::string, Keyword> keywords = {
+        { "newmtl", Keyword::Material },
+        { "Ka", Keyword::Ambient },
+        { "Kd", Keyword::Diffuse },
+        { "Ks", Keyword::Specular },
+        { "Ke", Keyword::Emmissive },
+    };
+
+    std::ifstream file(filename, std::ios::in);
+
+    std::unordered_map<std::string, Material> materials;
+    Material material;
+    std::string name;
+
+    for (std::string line; std::getline(file, line);) {
+        std::istringstream line_stream(line);
+        std::istream_iterator<std::string> word_it(line_stream);
+        std::istream_iterator<std::string> word_it_end;
+
+        Keyword keyword;
+        auto first_word = *word_it;
+        auto key_val_it = keywords.find(first_word);
+        if (key_val_it != keywords.end()) {
+            keyword = key_val_it->second;
+        } else {
+            continue;
+        }
+        ++word_it;
+
+        switch (keyword) {
+            case Keyword::Material:
+                if (name != "") {
+                    materials.insert({ name, material });
+                }
+                name = *word_it;
+                material = Material();
+                break;
+            case Keyword::Ambient:
+                material.ambient = colour(word_it);
+                break;
+            case Keyword::Diffuse:
+                material.diffuse = colour(word_it);
+                break;
+            case Keyword::Specular:
+                material.specular = colour(word_it);
+                break;
+            case Keyword::Emmissive:
+                material.emissive = colour(word_it);
+                break;
+        }
+    }
+
+    return materials;
+}
+
+Model obj::load(const std::string& obj_filename, const std::string& mtl_filename)
 {
     enum class Keyword {
         Comment,
@@ -25,11 +101,13 @@ Model obj::load(const std::string& filename)
         { "mtllib", Keyword::MaterialLibrary },
     };
 
-    std::ifstream file(filename, std::ios::in);
+    std::ifstream file(obj_filename, std::ios::in);
 
     Model model;
     std::vector<Vec> vertex_list;
     std::vector<Vec> normal_list;
+    auto materials = load_mtl(mtl_filename);
+    std::string material;
 
     for (std::string line; std::getline(file, line);) {
         std::istringstream line_stream(line);
@@ -69,6 +147,11 @@ Model obj::load(const std::string& filename)
             case Keyword::Face: {
                 Polygon polygon;
 
+                auto key_val_it = materials.find(material);
+                if (key_val_it != materials.end()) {
+                    polygon.material = key_val_it->second;
+                }
+
                 for (; word_it != word_it_end; ++word_it) {
                     std::istringstream face_element(*word_it);
 
@@ -95,11 +178,10 @@ Model obj::load(const std::string& filename)
                 break;
             }
             case Keyword::Material: {
+                material = *word_it;
                 break;
             }
-            case Keyword::MaterialLibrary: {
-                break;
-            }
+            case Keyword::MaterialLibrary:
             case Keyword::Comment:
             case Keyword::Smoothing:
                 break;

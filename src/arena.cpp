@@ -6,7 +6,7 @@
 
 Arena::Arena()
 {
-    arena = Object(obj::load("models/arena.obj"));
+    arena = Object(obj::load("models/arena.obj", ""));
     arena.scale(parameters::arena::size);
     arena.set_display(Display::Outline);
 }

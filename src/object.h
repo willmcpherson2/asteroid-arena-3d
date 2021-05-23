@@ -18,6 +18,13 @@ enum class Display {
     Outline,
 };
 
+struct Material {
+    Colour ambient;
+    Colour diffuse;
+    Colour specular;
+    Colour emissive;
+};
+
 struct Vertex {
     Vec vertex;
     Vec normal;
@@ -30,7 +37,7 @@ struct Polygon {
     void add(Vertex vertex);
 
     std::vector<Vertex> vertices;
-    Colour colour;
+    Material material;
     Display display { Display::Solid };
 };
 

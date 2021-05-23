@@ -4,7 +4,7 @@
 #include "world.h"
 
 Ship::Ship()
-    : ship(obj::load("models/ship.obj"))
+    : ship(obj::load("models/ship.obj", "models/ship.mtl"))
 {
 }
 

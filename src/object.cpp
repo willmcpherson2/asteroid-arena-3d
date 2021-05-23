@@ -109,13 +109,6 @@ void Object::look(double x_delta, double y_delta)
     assert(near(y.theta(z), 90));
 }
 
-void Object::set_colour(Colour colour)
-{
-    for (auto& polygon : model.polygons) {
-        polygon.colour = colour;
-    }
-}
-
 void Object::set_display(Display display)
 {
     for (auto& polygon : model.polygons) {
