@@ -2,6 +2,7 @@
 */*
 
 !.gitignore
+!.clang-format
 !Makefile
 !src
 !src/**

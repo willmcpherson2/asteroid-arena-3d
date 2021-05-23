@@ -143,12 +143,12 @@ void Polygon::add(Vertex vertex)
 void Polygon::draw() const
 {
     switch (display) {
-    case Display::Solid:
-        glBegin(GL_POLYGON);
-        break;
-    case Display::Outline:
-        glBegin(GL_LINE_LOOP);
-        break;
+        case Display::Solid:
+            glBegin(GL_POLYGON);
+            break;
+        case Display::Outline:
+            glBegin(GL_LINE_LOOP);
+            break;
     }
 
     for (auto vertex : vertices) {

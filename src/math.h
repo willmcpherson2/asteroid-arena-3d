@@ -303,28 +303,28 @@ struct Vec {
     const double& operator[](size_t i) const
     {
         switch (i) {
-        case 0:
-            return x;
-        case 1:
-            return y;
-        case 2:
-            return z;
-        default:
-            assert(false);
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+                return z;
+            default:
+                assert(false);
         }
     }
 
     double& operator[](size_t i)
     {
         switch (i) {
-        case 0:
-            return x;
-        case 1:
-            return y;
-        case 2:
-            return z;
-        default:
-            assert(false);
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+                return z;
+            default:
+                assert(false);
         }
     }
 
