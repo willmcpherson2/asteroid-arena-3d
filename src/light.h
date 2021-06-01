@@ -3,6 +3,8 @@
 
 struct Light {
     void draw() const;
+    void draw_ambient() const;
+    void draw_directional() const;
 };
 
 #endif

@@ -26,9 +26,5 @@ void Ship::draw() const
     camera.move(parameters::ship::camera_pos);
     camera.draw_camera(ship.pos);
 
-    Object light = ship;
-    light.move(parameters::ship::light_pos);
-    light.draw_light();
-
     ship.draw();
 }

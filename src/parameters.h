@@ -37,7 +37,6 @@ namespace ship {
 
     constexpr double speed = 0.04;
     constexpr Vec camera_pos { 0, 0, -4 };
-    constexpr Vec light_pos { 0, 0, 1 };
 
 }
 

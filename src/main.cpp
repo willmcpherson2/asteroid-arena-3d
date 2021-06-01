@@ -67,7 +67,6 @@ int main(int argc, char** argv)
     // glutFullScreen();
 
     glClearColor(0, 0, 0, 1);
-    glShadeModel(GL_SMOOTH);
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
     glEnable(GL_LIGHT1);

@@ -76,6 +76,10 @@ static std::unordered_map<std::string, Material> load_mtl(const std::string& fil
         }
     }
 
+    if (name != "") {
+        materials.insert({ name, material });
+    }
+
     return materials;
 }
 

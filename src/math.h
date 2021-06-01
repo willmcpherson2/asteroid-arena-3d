@@ -6,6 +6,24 @@
 #include <cmath>
 #include <iostream>
 
+inline void print()
+{
+    std::cout << "\n";
+}
+
+template <typename T>
+void print(T t)
+{
+    std::cout << t << "\n";
+}
+
+template <typename T, typename... Args>
+void print(T t, Args... args)
+{
+    std::cout << t << " ";
+    print(args...);
+}
+
 constexpr double pi = 3.141592653589793238462643383279502;
 
 constexpr double radians(double theta)

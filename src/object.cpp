@@ -1,4 +1,5 @@
 #include "object.h"
+#include "parameters.h"
 #include <GLUT/glut.h>
 
 Object::Object(Model model)
@@ -13,28 +14,9 @@ void Object::draw_camera(Vec focus) const
     glMatrixMode(GL_MODELVIEW);
 }
 
-void Object::draw_light() const
-{
-    float ambient[] = { 0.5, 0.5, 0.5, 1 };
-    glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
-
-    float diffuse[] = { 0.5, 0.5, 0.5, 1 };
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
-
-    float specular[] = { 0.5, 0.5, 0.5, 1 };
-    glLightfv(GL_LIGHT1, GL_SPECULAR, specular);
-
-    float position[] = { static_cast<float>(pos.x), static_cast<float>(pos.y), static_cast<float>(pos.z), 1 };
-    glLightfv(GL_LIGHT1, GL_POSITION, position);
-
-    float spot_direction[] = { static_cast<float>(z.x), static_cast<float>(z.y), static_cast<float>(z.z) };
-    glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
-
-    glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, 45);
-}
-
 void Object::draw() const
 {
+
     glPushMatrix();
 
     glTranslated(pos.x, pos.y, pos.z);
@@ -113,6 +95,7 @@ void Object::set_display(Display display)
 {
     for (auto& polygon : model.polygons) {
         polygon.display = display;
+        polygon.material.display = display;
     }
 }
 
@@ -135,6 +118,12 @@ void Polygon::add(Vertex vertex)
 
 void Polygon::draw() const
 {
+    if (display == Display::Outline) {
+        glDisable(GL_LIGHTING);
+    }
+
+    material.draw();
+
     switch (display) {
         case Display::Solid:
             glBegin(GL_POLYGON);
@@ -149,6 +138,8 @@ void Polygon::draw() const
     }
 
     glEnd();
+
+    glEnable(GL_LIGHTING);
 }
 
 void Vertex::draw() const
@@ -157,7 +148,21 @@ void Vertex::draw() const
     vertex.draw();
 }
 
-void Colour::draw() const
+void Material::draw() const
 {
-    glColor3d(r, g, b);
+    if (display == Display::Outline) {
+        glColor3d(diffuse.r, diffuse.g, diffuse.b);
+    } else {
+        float a[] { static_cast<float>(ambient.r), static_cast<float>(ambient.g), static_cast<float>(ambient.b), 1 };
+        glMaterialfv(GL_FRONT, GL_AMBIENT, a);
+
+        float d[] { static_cast<float>(diffuse.r), static_cast<float>(diffuse.g), static_cast<float>(diffuse.b), 1 };
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, d);
+
+        float s[] { static_cast<float>(specular.r), static_cast<float>(specular.g), static_cast<float>(specular.b), 1 };
+        glMaterialfv(GL_FRONT, GL_SPECULAR, s);
+
+        float e[] { static_cast<float>(emissive.r), static_cast<float>(emissive.g), static_cast<float>(emissive.b), 1 };
+        glMaterialfv(GL_FRONT, GL_EMISSION, e);
+    }
 }

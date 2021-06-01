@@ -6,8 +6,6 @@
 #include <vector>
 
 struct Colour {
-    void draw() const;
-
     double r { 0 };
     double g { 0 };
     double b { 0 };
@@ -19,10 +17,13 @@ enum class Display {
 };
 
 struct Material {
+    void draw() const;
+
     Colour ambient;
     Colour diffuse;
     Colour specular;
     Colour emissive;
+    Display display { Display::Solid };
 };
 
 struct Vertex {
@@ -52,7 +53,6 @@ struct Object {
     Object() = default;
     Object(Model model);
     void draw() const;
-    void draw_light() const;
     void draw_camera(Vec focus) const;
 
     void move(Vec pos);
