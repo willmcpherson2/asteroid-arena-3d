@@ -30,8 +30,16 @@ void World::simulate(int delta, Input input)
     this->delta = delta;
     this->input = input;
 
-    arena.simulate(*this);
+    Diff diff;
+
+    arena.simulate(*this, diff);
     ship.simulate(*this);
+
+    if (diff.reset_world) {
+        light = Light();
+        ship = Ship();
+        arena = Arena();
+    }
 }
 
 void World::draw() const

@@ -6,6 +6,10 @@
 #include "light.h"
 #include "ship.h"
 
+struct Diff {
+    bool reset_world { false };
+};
+
 struct World {
     void draw() const;
     void simulate(int delta, Input input);

@@ -10,10 +10,16 @@ Arena::Arena()
     arena.set_display(Display::Outline);
 }
 
-void Arena::simulate(const World& world)
+void Arena::simulate(const World& world, Diff& diff)
 {
+    auto out_of_bounds = [](auto component) {
+        return component >= parameters::arena::size || component <= -parameters::arena::size;
+    };
+
     Vec pos = world.ship.ship.pos;
-    constexpr double bound = (parameters::arena::size - parameters::arena::warning_distance) * 0.5;
+    if (out_of_bounds(pos.x) || out_of_bounds(pos.y) || out_of_bounds(pos.z)) {
+        diff.reset_world = true;
+    }
 }
 
 void Arena::draw() const

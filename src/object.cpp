@@ -49,7 +49,7 @@ void Object::move(Vec pos)
 
 void Object::scale(double size)
 {
-    this->size = this->size * Vec { size, size, size };
+    this->size = this->size * size;
 }
 
 void Object::scale(Vec size)
