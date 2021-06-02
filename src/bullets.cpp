@@ -21,7 +21,7 @@ void Bullets::apply_diff(const World& world, const Diff& diff)
         bullets.emplace_back(bullet, world);
     }
 
-    auto predicate = [](const auto& bullet) { return bullet.should_die; };
+    constexpr auto predicate = [](const auto& bullet) { return bullet.should_die; };
     bullets.erase(std::remove_if(bullets.begin(), bullets.end(), predicate), bullets.end());
 }
 
@@ -45,7 +45,7 @@ void Bullet::simulate(const World& world)
     double z_delta = parameters::bullet::speed * world.delta;
     bullet.move({ 0, 0, z_delta });
 
-    auto out_of_bounds = [](auto component) {
+    constexpr auto out_of_bounds = [](auto component) {
         double bound = parameters::arena::size * 0.5;
         return component >= bound || component <= -bound;
     };

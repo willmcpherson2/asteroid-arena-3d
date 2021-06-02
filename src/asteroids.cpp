@@ -16,7 +16,7 @@ void Asteroids::simulate(const World& world)
 
 void Asteroids::apply_diff(const World& world, const Diff& diff)
 {
-    auto predicate = [](const auto& asteroid) { return asteroid.should_die; };
+    constexpr auto predicate = [](const auto& asteroid) { return asteroid.should_die; };
     asteroids.erase(std::remove_if(asteroids.begin(), asteroids.end(), predicate), asteroids.end());
 
     last_wave += world.delta;
