@@ -37,8 +37,8 @@ void World::simulate(int delta, Input input)
     bullets.simulate(*this);
     asteroids.simulate(*this);
 
-    bullets.apply_diff(*this, diff);
-    asteroids.apply_diff(*this, diff);
+    bullets.update(*this, diff);
+    asteroids.update(*this, diff);
 
     if (diff.reset_world) {
         light = Light();

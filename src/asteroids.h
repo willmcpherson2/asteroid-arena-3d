@@ -21,7 +21,7 @@ struct Asteroid {
 struct Asteroids {
     Asteroids();
     void simulate(const World& world);
-    void apply_diff(const World& world, const Diff& diff);
+    void update(const World& world, const Diff& diff);
     void draw() const;
 
     Object asteroid;

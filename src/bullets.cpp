@@ -15,7 +15,7 @@ void Bullets::simulate(const World& world)
     }
 }
 
-void Bullets::apply_diff(const World& world, const Diff& diff)
+void Bullets::update(const World& world, const Diff& diff)
 {
     if (diff.fire) {
         bullets.emplace_back(bullet, world);

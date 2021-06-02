@@ -19,7 +19,7 @@ struct Bullet {
 struct Bullets {
     Bullets();
     void simulate(const World& world);
-    void apply_diff(const World& world, const Diff& diff);
+    void update(const World& world, const Diff& diff);
     void draw() const;
 
     Object bullet;
