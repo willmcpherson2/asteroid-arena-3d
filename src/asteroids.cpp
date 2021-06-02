@@ -70,6 +70,13 @@ void Asteroid::simulate(const World& world)
     if (out_of_bounds(pos.x) || out_of_bounds(pos.y) || out_of_bounds(pos.z)) {
         should_die = true;
     }
+
+    for (const auto& bullet : world.bullets.bullets) {
+        double distance = (asteroid.pos - bullet.bullet.pos).length();
+        if (distance - asteroid.size.x * 0.5 - parameters::bullet::size * 0.5 < 0) {
+            should_die = true;
+        }
+    }
 }
 
 void Asteroid::draw() const

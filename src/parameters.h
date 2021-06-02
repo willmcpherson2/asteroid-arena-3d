@@ -38,7 +38,7 @@ namespace ship {
 
     constexpr double speed = 0.06;
     constexpr double size = 2;
-    constexpr int fire_rate = 800;
+    constexpr int fire_interval = 500;
     constexpr Vec camera_pos { 0, 0.5, -2 };
 
 }

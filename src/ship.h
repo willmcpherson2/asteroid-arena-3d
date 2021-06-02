@@ -14,7 +14,7 @@ struct Ship {
     void simulate(const World& world, Diff& diff);
 
     Object ship;
-    int last_fire { parameters::ship::fire_rate };
+    int last_fire { parameters::ship::fire_interval };
 };
 
 #endif

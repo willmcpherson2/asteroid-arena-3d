@@ -32,7 +32,7 @@ void Ship::simulate(const World& world, Diff& diff)
     }
 
     last_fire += world.delta;
-    if (world.input.fire() && last_fire >= parameters::ship::fire_rate) {
+    if (world.input.fire() && last_fire >= parameters::ship::fire_interval) {
         diff.fire = true;
         last_fire = 0;
     }
