@@ -45,6 +45,7 @@ void World::simulate(int delta, Input input)
         ship = Ship();
         arena = Arena();
         bullets = Bullets();
+        asteroids = Asteroids();
     }
 }
 
