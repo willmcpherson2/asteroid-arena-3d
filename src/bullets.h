@@ -1,5 +1,5 @@
-#ifndef BULLET_H
-#define BULLET_H
+#ifndef BULLETS_H
+#define BULLETS_H
 
 #include "object.h"
 #include <vector>
