@@ -12,15 +12,6 @@ Arena::Arena()
 
 void Arena::simulate(const World& world, Diff& diff)
 {
-    auto out_of_bounds = [](auto component) {
-        double bound = parameters::arena::size * 0.5;
-        return component >= bound || component <= -bound;
-    };
-
-    Vec pos = world.ship.ship.pos;
-    if (out_of_bounds(pos.x) || out_of_bounds(pos.y) || out_of_bounds(pos.z)) {
-        diff.reset_world = true;
-    }
 }
 
 void Arena::draw() const

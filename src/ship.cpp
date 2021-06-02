@@ -11,6 +11,17 @@ Ship::Ship()
 
 void Ship::simulate(const World& world, Diff& diff)
 {
+    auto out_of_bounds = [](auto component) {
+        double bound = parameters::arena::size * 0.5;
+        return component >= bound || component <= -bound;
+    };
+
+    Vec pos = ship.pos;
+    if (out_of_bounds(pos.x) || out_of_bounds(pos.y) || out_of_bounds(pos.z)) {
+        diff.reset_world = true;
+        return;
+    }
+
     double x_delta = world.delta * parameters::input::mouse_sensitivity * world.input.mouse_delta_x();
     double y_delta = world.delta * parameters::input::mouse_sensitivity * world.input.mouse_delta_y();
     ship.look(x_delta, y_delta);
