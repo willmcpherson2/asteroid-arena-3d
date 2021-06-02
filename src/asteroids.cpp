@@ -9,13 +9,6 @@ Asteroids::Asteroids()
 
 void Asteroids::simulate(const World& world)
 {
-    for (auto& asteroid : asteroids) {
-        asteroid.simulate(world);
-    }
-}
-
-void Asteroids::update(const World& world, const Diff& diff)
-{
     constexpr auto predicate = [](const auto& asteroid) { return asteroid.should_die; };
     asteroids.erase(std::remove_if(asteroids.begin(), asteroids.end(), predicate), asteroids.end());
 
@@ -27,6 +20,14 @@ void Asteroids::update(const World& world, const Diff& diff)
         ++wave_num;
         last_wave = 0;
     }
+
+    for (auto& asteroid : asteroids) {
+        asteroid.simulate(world);
+    }
+}
+
+void Asteroids::update(const World& world, const Diff& diff)
+{
 }
 
 void Asteroids::draw() const

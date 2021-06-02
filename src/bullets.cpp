@@ -10,6 +10,9 @@ Bullets::Bullets()
 
 void Bullets::simulate(const World& world)
 {
+    constexpr auto predicate = [](const auto& bullet) { return bullet.should_die; };
+    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), predicate), bullets.end());
+
     for (auto& bullet : bullets) {
         bullet.simulate(world);
     }
@@ -20,9 +23,6 @@ void Bullets::update(const World& world, const Diff& diff)
     if (diff.fire) {
         bullets.emplace_back(bullet, world);
     }
-
-    constexpr auto predicate = [](const auto& bullet) { return bullet.should_die; };
-    bullets.erase(std::remove_if(bullets.begin(), bullets.end(), predicate), bullets.end());
 }
 
 void Bullets::draw() const
