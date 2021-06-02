@@ -3,6 +3,7 @@
 
 #include "input.h"
 #include "object.h"
+#include "parameters.h"
 
 struct World;
 struct Diff;
@@ -13,7 +14,7 @@ struct Ship {
     void simulate(const World& world, Diff& diff);
 
     Object ship;
-    int last_fire;
+    int last_fire { parameters::ship::fire_rate };
 };
 
 #endif

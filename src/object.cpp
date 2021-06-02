@@ -16,7 +16,6 @@ void Object::draw_camera(Vec focus) const
 
 void Object::draw() const
 {
-
     glPushMatrix();
 
     glTranslated(pos.x, pos.y, pos.z);

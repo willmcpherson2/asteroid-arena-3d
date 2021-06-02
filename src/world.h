@@ -2,6 +2,7 @@
 #define WORLD_H
 
 #include "arena.h"
+#include "asteroids.h"
 #include "bullets.h"
 #include "input.h"
 #include "light.h"
@@ -24,6 +25,7 @@ struct World {
     Ship ship;
     Arena arena;
     Bullets bullets;
+    Asteroids asteroids;
 };
 
 #endif

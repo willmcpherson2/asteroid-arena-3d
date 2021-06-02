@@ -18,9 +18,7 @@ void Bullets::simulate(const World& world)
 void Bullets::apply_diff(const World& world, const Diff& diff)
 {
     if (diff.fire) {
-        Vec pos = world.ship.ship.pos;
-        Vec z = world.ship.ship.z;
-        bullets.emplace_back(bullet, pos, z);
+        bullets.emplace_back(bullet, world);
     }
 
     auto predicate = [](const auto& bullet) { return bullet.should_die; };
@@ -34,11 +32,11 @@ void Bullets::draw() const
     }
 }
 
-Bullet::Bullet(Object bullet, Vec pos, Vec z)
+Bullet::Bullet(Object bullet, const World& world)
     : bullet(bullet)
 {
-    this->bullet.pos = pos;
-    this->bullet.z = z;
+    this->bullet.pos = world.ship.ship.pos;
+    this->bullet.z = world.ship.ship.z;
     this->bullet.move({ 0, 0, parameters::ship::size * 0.5 });
 }
 

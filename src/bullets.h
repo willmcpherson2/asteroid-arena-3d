@@ -8,7 +8,7 @@ struct World;
 struct Diff;
 
 struct Bullet {
-    Bullet(Object bullet, Vec pos, Vec z);
+    Bullet(Object bullet, const World& world);
     void simulate(const World& world);
     void draw() const;
 

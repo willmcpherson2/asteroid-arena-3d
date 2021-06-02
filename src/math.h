@@ -5,6 +5,7 @@
 #include <cassert>
 #include <cmath>
 #include <iostream>
+#include <random>
 
 inline void print()
 {
@@ -22,6 +23,22 @@ void print(T t, Args... args)
 {
     std::cout << t << " ";
     print(args...);
+}
+
+inline int rand_range(int min, int max)
+{
+    static std::random_device device;
+    static std::mt19937 generator(device());
+    std::uniform_int_distribution<int> distribution(min, max);
+    return distribution(generator);
+}
+
+inline double rand_range(double min, double max)
+{
+    static std::random_device device;
+    static std::mt19937 generator(device());
+    std::uniform_real_distribution<double> distribution(min, max);
+    return distribution(generator);
 }
 
 constexpr double pi = 3.141592653589793238462643383279502;

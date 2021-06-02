@@ -10,7 +10,7 @@ void Light::draw() const
 
 void Light::draw_ambient() const
 {
-    float ambient[] = { 0.5, 0.5, 0.5, 1 };
+    float ambient[] = { 0.2f, 0.2f, 0.2f, 1 };
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
 
     float diffuse[] = { 0, 0, 0, 1 };
@@ -22,10 +22,10 @@ void Light::draw_ambient() const
 
 void Light::draw_directional() const
 {
-    float ambient[] = { 0.5, 0.5, 0.5, 1 };
+    float ambient[] = { 0, 0, 0, 1 };
     glLightfv(GL_LIGHT1, GL_AMBIENT, ambient);
 
-    float diffuse[] = { 0.5, 0.5, 0.5, 1 };
+    float diffuse[] = { 1, 1, 1, 1 };
     glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuse);
 
     float specular[] = { 0.5, 0.5, 0.5, 1 };

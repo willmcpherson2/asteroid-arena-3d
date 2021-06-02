@@ -36,17 +36,27 @@ namespace arena {
 
 namespace ship {
 
-    constexpr double speed = 0.04;
+    constexpr double speed = 0.06;
     constexpr double size = 2;
-    constexpr int fire_rate = 300;
+    constexpr int fire_rate = 800;
     constexpr Vec camera_pos { 0, 0.5, -2 };
 
 }
 
 namespace bullet {
 
-    constexpr double speed = 0.1;
-    constexpr double size = 0.2;
+    constexpr double speed = 0.15;
+    constexpr double size = 0.4;
+
+}
+
+namespace asteroid {
+
+    constexpr double min_size = 1;
+    constexpr double max_size = 24;
+    constexpr double min_speed = 0.04;
+    constexpr double max_speed = 0.1;
+    constexpr int wave_interval = 10000;
 
 }
 
