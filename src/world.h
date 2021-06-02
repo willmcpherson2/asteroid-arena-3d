@@ -2,12 +2,14 @@
 #define WORLD_H
 
 #include "arena.h"
+#include "bullets.h"
 #include "input.h"
 #include "light.h"
 #include "ship.h"
 
 struct Diff {
     bool reset_world { false };
+    bool fire { false };
 };
 
 struct World {
@@ -21,6 +23,7 @@ struct World {
     Light light;
     Ship ship;
     Arena arena;
+    Bullets bullets;
 };
 
 #endif

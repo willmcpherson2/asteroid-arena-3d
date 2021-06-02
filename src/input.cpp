@@ -1,7 +1,6 @@
 #include "input.h"
 #include "parameters.h"
 #include <cstdlib>
-#include <iostream>
 
 Input Input::take()
 {
@@ -15,11 +14,12 @@ Input Input::take()
 
 void Input::handle_key(int key, bool down)
 {
-    m_any = down;
-
     switch (key) {
         case parameters::input::forward:
             m_forward = down;
+            break;
+        case parameters::input::fire:
+            m_fire = down;
             break;
         case parameters::input::quit1:
         case parameters::input::quit2:

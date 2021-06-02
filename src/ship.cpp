@@ -6,9 +6,10 @@
 Ship::Ship()
     : ship(obj::load("models/ship.obj", "models/ship.mtl"))
 {
+    ship.scale(parameters::ship::size);
 }
 
-void Ship::simulate(const World& world)
+void Ship::simulate(const World& world, Diff& diff)
 {
     double x_delta = world.delta * parameters::input::mouse_sensitivity * world.input.mouse_delta_x();
     double y_delta = world.delta * parameters::input::mouse_sensitivity * world.input.mouse_delta_y();
@@ -18,13 +19,24 @@ void Ship::simulate(const World& world)
         double z_delta = parameters::ship::speed * world.delta;
         ship.move({ 0, 0, z_delta });
     }
+
+    last_fire += world.delta;
+    if (world.input.fire() && last_fire >= parameters::ship::fire_rate) {
+        diff.fire = true;
+        last_fire = 0;
+    }
 }
 
 void Ship::draw() const
 {
     Object camera = ship;
     camera.move(parameters::ship::camera_pos);
-    camera.draw_camera(ship.pos);
+    Vec focus = ship.pos + ship.y * parameters::ship::camera_pos.y;
+    camera.draw_camera(focus);
+
+    // Object camera;
+    // Vec focus = ship.pos;
+    // camera.draw_camera(focus);
 
     ship.draw();
 }
