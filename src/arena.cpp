@@ -41,10 +41,23 @@ void Arena::simulate(const World& world, Diff& diff)
 
 void Arena::draw() const
 {
-    warn_front ? red_front.draw() : grey_front.draw();
-    warn_back ? red_back.draw() : grey_back.draw();
-    warn_top ? red_top.draw() : grey_top.draw();
-    warn_bottom ? red_bottom.draw() : grey_bottom.draw();
-    warn_right ? red_right.draw() : grey_right.draw();
-    warn_left ? red_left.draw() : grey_left.draw();
+    constexpr auto draw_wall = [](bool warn, const auto& wall) {
+        if (warn) {
+            wall.draw();
+        }
+    };
+
+    draw_wall(warn_front, red_front);
+    draw_wall(warn_back, red_back);
+    draw_wall(warn_top, red_top);
+    draw_wall(warn_bottom, red_bottom);
+    draw_wall(warn_right, red_right);
+    draw_wall(warn_left, red_left);
+
+    draw_wall(!warn_front, grey_front);
+    draw_wall(!warn_back, grey_back);
+    draw_wall(!warn_top, grey_top);
+    draw_wall(!warn_bottom, grey_bottom);
+    draw_wall(!warn_right, grey_right);
+    draw_wall(!warn_left, grey_left);
 }
