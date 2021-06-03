@@ -9,11 +9,16 @@ struct Colour {
     double r { 0 };
     double g { 0 };
     double b { 0 };
+    double a { 0 };
 };
 
 enum class Display {
     Solid,
     Outline,
+};
+
+struct Image {
+    std::vector<Colour> pixels;
 };
 
 struct Material {

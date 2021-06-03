@@ -7,15 +7,10 @@
 #include <iostream>
 #include <random>
 
-inline void print()
-{
-    std::cout << "\n";
-}
-
 template <typename T>
 void print(T t)
 {
-    std::cout << t << "\n";
+    std::cout << t;
 }
 
 template <typename T, typename... Args>
@@ -23,6 +18,24 @@ void print(T t, Args... args)
 {
     std::cout << t << " ";
     print(args...);
+}
+
+inline void println()
+{
+    std::cout << "\n";
+}
+
+template <typename T>
+void println(T t)
+{
+    std::cout << t << "\n";
+}
+
+template <typename T, typename... Args>
+void println(T t, Args... args)
+{
+    std::cout << t << " ";
+    println(args...);
 }
 
 inline int rand_range(int min, int max)
