@@ -26,10 +26,6 @@ void Asteroids::simulate(const World& world)
     }
 }
 
-void Asteroids::update(const World& world, const Diff& diff)
-{
-}
-
 void Asteroids::draw() const
 {
     for (const auto& asteroid : asteroids) {

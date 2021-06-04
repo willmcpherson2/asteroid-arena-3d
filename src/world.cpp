@@ -12,11 +12,15 @@ static void world_coordinates()
     double height_ratio = static_cast<double>(height) / static_cast<double>(width);
     double ratio = std::max(width_ratio, height_ratio);
 
-    int view_width = static_cast<int>(width >= height ? width : width * ratio);
-    int view_height = static_cast<int>(width >= height ? height * ratio : height);
+    int width_diff = width - height;
+    int height_diff = height - width;
+    int diff = std::max(width_diff, height_diff);
 
-    int view_x = 0;
-    int view_y = 0;
+    int view_width = static_cast<int>(width >= height ? width : width * ratio) - diff;
+    int view_height = static_cast<int>(width >= height ? height * ratio : height) - diff;
+
+    int view_x = width_diff > 0 ? width_diff / 2 : 0;
+    int view_y = height_diff > 0 ? height_diff / 2 : 0;
 
     glViewport(view_x, view_y, view_width, view_height);
     glMatrixMode(GL_PROJECTION);
@@ -32,12 +36,11 @@ void World::simulate(int delta, Input input)
 
     Diff diff;
 
-    arena.simulate(*this, diff);
+    arena.simulate(*this);
     ship.simulate(*this, diff);
     asteroids.simulate(*this);
     bullets.simulate(*this);
 
-    asteroids.update(*this, diff);
     bullets.update(*this, diff);
 
     if (diff.reset_world) {

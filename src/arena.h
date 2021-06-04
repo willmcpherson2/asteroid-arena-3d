@@ -11,7 +11,7 @@ struct Diff;
 struct Arena {
     Arena();
     void draw() const;
-    void simulate(const World& world, Diff& diff);
+    void simulate(const World& world);
 
     bool warn_front { false };
     bool warn_back { false };

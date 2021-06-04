@@ -26,7 +26,7 @@ Arena::Arena()
     load_wall(red_left, "assets/arena-red-left.obj", "assets/arena-red-left.mtl");
 }
 
-void Arena::simulate(const World& world, Diff& diff)
+void Arena::simulate(const World& world)
 {
     Vec pos = world.ship.ship.pos;
     double bound = parameters::arena::warning_size * 0.5;
