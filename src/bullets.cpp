@@ -3,7 +3,7 @@
 #include "world.h"
 
 Bullets::Bullets()
-    : bullet(obj::load("models/bullet.obj", "models/bullet.mtl", "models/bullet.data", 64, 64))
+    : bullet(obj::load("assets/bullet.obj", "assets/bullet.mtl", "assets/bullet.data", 64, 64))
 {
     bullet.scale(parameters::bullet::size);
     bullet.set_display(Display::Texture);

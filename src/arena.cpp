@@ -11,19 +11,19 @@ Arena::Arena()
         wall.set_display(Display::Outline);
     };
 
-    load_wall(grey_front, "models/arena-grey-front.obj", "models/arena-grey-front.mtl");
-    load_wall(grey_back, "models/arena-grey-back.obj", "models/arena-grey-back.mtl");
-    load_wall(grey_top, "models/arena-grey-top.obj", "models/arena-grey-top.mtl");
-    load_wall(grey_bottom, "models/arena-grey-bottom.obj", "models/arena-grey-bottom.mtl");
-    load_wall(grey_right, "models/arena-grey-right.obj", "models/arena-grey-right.mtl");
-    load_wall(grey_left, "models/arena-grey-left.obj", "models/arena-grey-left.mtl");
+    load_wall(grey_front, "assets/arena-grey-front.obj", "assets/arena-grey-front.mtl");
+    load_wall(grey_back, "assets/arena-grey-back.obj", "assets/arena-grey-back.mtl");
+    load_wall(grey_top, "assets/arena-grey-top.obj", "assets/arena-grey-top.mtl");
+    load_wall(grey_bottom, "assets/arena-grey-bottom.obj", "assets/arena-grey-bottom.mtl");
+    load_wall(grey_right, "assets/arena-grey-right.obj", "assets/arena-grey-right.mtl");
+    load_wall(grey_left, "assets/arena-grey-left.obj", "assets/arena-grey-left.mtl");
 
-    load_wall(red_front, "models/arena-red-front.obj", "models/arena-red-front.mtl");
-    load_wall(red_back, "models/arena-red-back.obj", "models/arena-red-back.mtl");
-    load_wall(red_top, "models/arena-red-top.obj", "models/arena-red-top.mtl");
-    load_wall(red_bottom, "models/arena-red-bottom.obj", "models/arena-red-bottom.mtl");
-    load_wall(red_right, "models/arena-red-right.obj", "models/arena-red-right.mtl");
-    load_wall(red_left, "models/arena-red-left.obj", "models/arena-red-left.mtl");
+    load_wall(red_front, "assets/arena-red-front.obj", "assets/arena-red-front.mtl");
+    load_wall(red_back, "assets/arena-red-back.obj", "assets/arena-red-back.mtl");
+    load_wall(red_top, "assets/arena-red-top.obj", "assets/arena-red-top.mtl");
+    load_wall(red_bottom, "assets/arena-red-bottom.obj", "assets/arena-red-bottom.mtl");
+    load_wall(red_right, "assets/arena-red-right.obj", "assets/arena-red-right.mtl");
+    load_wall(red_left, "assets/arena-red-left.obj", "assets/arena-red-left.mtl");
 }
 
 void Arena::simulate(const World& world, Diff& diff)

@@ -3,7 +3,7 @@
 #include "world.h"
 
 Asteroids::Asteroids()
-    : asteroid(obj::load("models/asteroid.obj", "models/asteroid.mtl"))
+    : asteroid(obj::load("assets/asteroid.obj", "assets/asteroid.mtl"))
 {
 }
 
