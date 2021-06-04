@@ -6,7 +6,7 @@
 
 namespace obj {
 
-Model load(const std::string& obj_filename, const std::string& mtl_filename);
+Model load(const std::string& obj_filename = "", const std::string& mtl_filename = "", const std::string& image_filename = "", int width = 0, int height = 0);
 
 }
 

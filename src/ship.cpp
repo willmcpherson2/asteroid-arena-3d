@@ -36,18 +36,15 @@ void Ship::simulate(const World& world, Diff& diff)
         diff.fire = true;
         last_fire = 0;
     }
+
+    camera = ship;
+    camera.move(parameters::ship::camera_pos);
+    focus = ship.pos + ship.y * parameters::ship::camera_pos.y;
+    camera.draw_camera(focus);
 }
 
 void Ship::draw() const
 {
-    Object camera = ship;
-    camera.move(parameters::ship::camera_pos);
-    Vec focus = ship.pos + ship.y * parameters::ship::camera_pos.y;
     camera.draw_camera(focus);
-
-    // Object camera;
-    // Vec focus = ship.pos;
-    // camera.draw_camera(focus);
-
     ship.draw();
 }

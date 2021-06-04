@@ -2,7 +2,6 @@
 #define OBJECT_H
 
 #include "math.h"
-#include <variant>
 #include <vector>
 
 struct Colour {
@@ -12,28 +11,46 @@ struct Colour {
     double a { 0 };
 };
 
+struct Pixel {
+    unsigned char r { 0 };
+    unsigned char g { 0 };
+    unsigned char b { 0 };
+    unsigned char a { 0 };
+};
+
 enum class Display {
-    Solid,
     Outline,
+    Solid,
+    Texture,
 };
 
 struct Image {
-    std::vector<Colour> pixels;
+    int width { 0 };
+    int height { 0 };
+    std::vector<Pixel> pixels;
+};
+
+struct Texture {
+    unsigned id { 0 };
+    Image image;
 };
 
 struct Material {
     void draw() const;
+    void reset() const;
 
     Colour ambient;
     Colour diffuse;
     Colour specular;
     Colour emissive;
+    Texture texture;
     Display display { Display::Solid };
 };
 
 struct Vertex {
     Vec vertex;
     Vec normal;
+    Vec uv;
 
     void draw() const;
 };

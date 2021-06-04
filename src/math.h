@@ -348,6 +348,11 @@ struct Vec {
         glNormal3d(x, y, z);
     }
 
+    void draw_uv() const
+    {
+        glTexCoord2d(x, y);
+    }
+
     const double& operator[](size_t i) const
     {
         switch (i) {

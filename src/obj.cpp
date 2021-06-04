@@ -3,6 +3,47 @@
 #include <sstream>
 #include <unordered_map>
 
+static Image load_image(const std::string& image_filename, int width, int height)
+{
+    std::ifstream file(image_filename, std::ios::in);
+    std::vector<unsigned char> buffer { std::istreambuf_iterator<char>(file), {} };
+
+    Image image;
+
+    image.width = width;
+    image.height = height;
+
+    for (size_t i = 0; i < buffer.size(); i += 4) {
+        unsigned char r = buffer[i];
+        unsigned char g = buffer[i + 1];
+        unsigned char b = buffer[i + 2];
+        unsigned char a = buffer[i + 3];
+        Pixel c { r, g, b, a };
+        image.pixels.push_back(c);
+    }
+
+    return image;
+}
+
+static Texture load_texture(const std::string& image_filename, int width, int height)
+{
+    Texture texture;
+
+    texture.image = load_image(image_filename, width, height);
+
+    glPushAttrib(GL_TEXTURE_BIT);
+    glGenTextures(1, &texture.id);
+    glBindTexture(GL_TEXTURE_2D, texture.id);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture.image.width, texture.image.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture.image.pixels.data());
+    glPopAttrib();
+
+    return texture;
+}
+
 static Colour colour(std::istream_iterator<std::string>& word_it)
 {
     auto r = std::stod(*word_it);
@@ -14,7 +55,7 @@ static Colour colour(std::istream_iterator<std::string>& word_it)
     return { r, g, b };
 }
 
-static std::unordered_map<std::string, Material> load_mtl(const std::string& filename)
+static std::unordered_map<std::string, Material> load_mtl(const std::string& mtl_filename, const std::string& image_filename, int width, int height)
 {
     enum class Keyword {
         Material,
@@ -32,7 +73,7 @@ static std::unordered_map<std::string, Material> load_mtl(const std::string& fil
         { "Ke", Keyword::Emmissive },
     };
 
-    std::ifstream file(filename, std::ios::in);
+    std::ifstream file(mtl_filename, std::ios::in);
 
     std::unordered_map<std::string, Material> materials;
     Material material;
@@ -56,6 +97,9 @@ static std::unordered_map<std::string, Material> load_mtl(const std::string& fil
         switch (keyword) {
             case Keyword::Material:
                 if (name != "") {
+                    if (image_filename != "") {
+                        material.texture = load_texture(image_filename, width, height);
+                    }
                     materials.insert({ name, material });
                 }
                 name = *word_it;
@@ -77,18 +121,22 @@ static std::unordered_map<std::string, Material> load_mtl(const std::string& fil
     }
 
     if (name != "") {
+        if (image_filename != "") {
+            material.texture = load_texture(image_filename, width, height);
+        }
         materials.insert({ name, material });
     }
 
     return materials;
 }
 
-Model obj::load(const std::string& obj_filename, const std::string& mtl_filename)
+Model obj::load(const std::string& obj_filename, const std::string& mtl_filename, const std::string& image_filename, int width, int height)
 {
     enum class Keyword {
         Comment,
         Vertex,
         Normal,
+        Uv,
         Face,
         Smoothing,
         Material,
@@ -99,6 +147,7 @@ Model obj::load(const std::string& obj_filename, const std::string& mtl_filename
         { "#", Keyword::Comment },
         { "v", Keyword::Vertex },
         { "vn", Keyword::Normal },
+        { "vt", Keyword::Uv },
         { "f", Keyword::Face },
         { "s", Keyword::Smoothing },
         { "usemtl", Keyword::Material },
@@ -110,7 +159,8 @@ Model obj::load(const std::string& obj_filename, const std::string& mtl_filename
     Model model;
     std::vector<Vec> vertex_list;
     std::vector<Vec> normal_list;
-    auto materials = load_mtl(mtl_filename);
+    std::vector<Vec> uv_list;
+    auto materials = load_mtl(mtl_filename, image_filename, width, height);
     std::string material;
 
     for (std::string line; std::getline(file, line);) {
@@ -131,19 +181,32 @@ Model obj::load(const std::string& obj_filename, const std::string& mtl_filename
 
         switch (keyword) {
             case Keyword::Vertex:
+            case Keyword::Uv:
             case Keyword::Normal: {
                 auto x = std::stod(*word_it);
                 ++word_it;
                 auto y = std::stod(*word_it);
                 ++word_it;
-                auto z = std::stod(*word_it);
+                auto z = word_it != word_it_end ? std::stod(*word_it) : 0;
 
                 Vec v { x, y, z };
 
-                if (keyword == Keyword::Vertex) {
-                    vertex_list.push_back(v);
-                } else {
-                    normal_list.push_back(v);
+                switch (keyword) {
+                    case Keyword::Vertex:
+                        vertex_list.push_back(v);
+                        break;
+                    case Keyword::Normal:
+                        normal_list.push_back(v);
+                        break;
+                    case Keyword::Uv:
+                        uv_list.push_back(v);
+                        break;
+                    case Keyword::Comment:
+                    case Keyword::Face:
+                    case Keyword::Smoothing:
+                    case Keyword::Material:
+                    case Keyword::MaterialLibrary:
+                        assert(false);
                 }
 
                 break;
@@ -165,8 +228,17 @@ Model obj::load(const std::string& obj_filename, const std::string& mtl_filename
                     assert(vertex_index < vertex_list.size());
                     auto vertex = vertex_list[vertex_index];
 
-                    std::string texture_index_str;
-                    std::getline(face_element, texture_index_str, '/');
+                    std::string uv_index_str;
+                    std::getline(face_element, uv_index_str, '/');
+                    auto uv = [&]() {
+                        if (uv_index_str != "") {
+                            auto uv_index = std::stoull(uv_index_str) - 1;
+                            assert(uv_index < uv_list.size());
+                            return uv_list[uv_index];
+                        } else {
+                            return Vec {};
+                        }
+                    }();
 
                     std::string normal_index_str;
                     std::getline(face_element, normal_index_str, '/');
@@ -174,7 +246,7 @@ Model obj::load(const std::string& obj_filename, const std::string& mtl_filename
                     assert(normal_index < normal_list.size());
                     auto normal = normal_list[normal_index];
 
-                    polygon.add({ vertex, normal });
+                    polygon.add({ vertex, normal, uv });
                 }
 
                 model.add(polygon);

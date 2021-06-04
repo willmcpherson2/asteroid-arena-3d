@@ -117,41 +117,25 @@ void Polygon::add(Vertex vertex)
 
 void Polygon::draw() const
 {
-    if (display == Display::Outline) {
-        glDisable(GL_LIGHTING);
-    }
-
     material.draw();
-
-    switch (display) {
-        case Display::Solid:
-            glBegin(GL_POLYGON);
-            break;
-        case Display::Outline:
-            glBegin(GL_LINE_LOOP);
-            break;
-    }
 
     for (auto vertex : vertices) {
         vertex.draw();
     }
 
-    glEnd();
-
-    glEnable(GL_LIGHTING);
+    material.reset();
 }
 
 void Vertex::draw() const
 {
     normal.draw_normal();
+    uv.draw_uv();
     vertex.draw();
 }
 
 void Material::draw() const
 {
-    if (display == Display::Outline) {
-        glColor3d(diffuse.r, diffuse.g, diffuse.b);
-    } else {
+    auto material = [&]() {
         float a[] { static_cast<float>(ambient.r), static_cast<float>(ambient.g), static_cast<float>(ambient.b), 1 };
         glMaterialfv(GL_FRONT, GL_AMBIENT, a);
 
@@ -163,5 +147,51 @@ void Material::draw() const
 
         float e[] { static_cast<float>(emissive.r), static_cast<float>(emissive.g), static_cast<float>(emissive.b), 1 };
         glMaterialfv(GL_FRONT, GL_EMISSION, e);
+    };
+
+    switch (display) {
+        case Display::Outline:
+            glDisable(GL_LIGHTING);
+            glColor3d(diffuse.r, diffuse.g, diffuse.b);
+
+            glBegin(GL_LINE_LOOP);
+
+            break;
+        case Display::Solid:
+            material();
+
+            glBegin(GL_POLYGON);
+
+            break;
+        case Display::Texture:
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+            glEnable(GL_TEXTURE_2D);
+            glBindTexture(GL_TEXTURE_2D, texture.id);
+
+            material();
+
+            glBegin(GL_POLYGON);
+
+            break;
+    }
+}
+
+void Material::reset() const
+{
+    switch (display) {
+        case Display::Outline:
+            glEnd();
+            glEnable(GL_LIGHTING);
+            break;
+        case Display::Solid:
+            glEnd();
+            break;
+        case Display::Texture:
+            glEnd();
+            glDisable(GL_BLEND);
+            glDisable(GL_TEXTURE_2D);
+            break;
     }
 }

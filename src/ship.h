@@ -14,6 +14,8 @@ struct Ship {
     void simulate(const World& world, Diff& diff);
 
     Object ship;
+    Object camera;
+    Vec focus;
     int last_fire { parameters::ship::fire_interval };
 };
 

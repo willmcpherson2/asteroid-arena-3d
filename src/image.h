@@ -6,7 +6,7 @@
 
 namespace image {
 
-Image load(const std::string& filename);
+Image load(const std::string& filename, int width, int height);
 
 }
 

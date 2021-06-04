@@ -1,18 +1,19 @@
 #include "input.h"
+#include "obj.h"
 #include "world.h"
 #include <CoreGraphics/CoreGraphics.h>
 #include <GLUT/glut.h>
 #include <iomanip>
 #include <iostream>
 
-static World g_world;
+static std::unique_ptr<World> g_world;
 static Input g_input;
 
 static void display()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    g_world.draw();
+    g_world->draw();
 
     unsigned err = 0;
     while ((err = glGetError()) != GL_NO_ERROR) {
@@ -29,7 +30,7 @@ static void idle()
     int delta = time - last_time;
     last_time = time;
 
-    g_world.simulate(delta, g_input.take());
+    g_world->simulate(delta, g_input.take());
 
     glutPostRedisplay();
 }
@@ -73,6 +74,8 @@ int main(int argc, char** argv)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_RESCALE_NORMAL);
     glutSetCursor(GLUT_CURSOR_NONE);
+
+    g_world = std::make_unique<World>();
 
     glutDisplayFunc(display);
     glutIdleFunc(idle);

@@ -13,6 +13,7 @@ struct Bullet {
     void draw() const;
 
     Object bullet;
+    Vec z;
     bool should_die { false };
 };
 

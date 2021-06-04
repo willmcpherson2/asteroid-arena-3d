@@ -24,8 +24,8 @@ struct World {
     Light light;
     Ship ship;
     Arena arena;
-    Bullets bullets;
     Asteroids asteroids;
+    Bullets bullets;
 };
 
 #endif
