@@ -14,6 +14,13 @@ void Bullets::simulate(const World& world)
     constexpr auto predicate = [](const auto& bullet) { return bullet.should_die; };
     bullets.erase(std::remove_if(bullets.begin(), bullets.end(), predicate), bullets.end());
 
+    auto furthest_first = [&](const Bullet& a, const Bullet& b) {
+        auto a_to_camera = a.bullet.pos - world.ship.camera.pos;
+        auto b_to_camera = b.bullet.pos - world.ship.camera.pos;
+        return a_to_camera.length() > b_to_camera.length();
+    };
+    std::sort(bullets.begin(), bullets.end(), furthest_first);
+
     for (auto& bullet : bullets) {
         bullet.simulate(world);
     }
