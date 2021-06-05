@@ -10,7 +10,7 @@ struct Diff;
 
 struct Asteroid {
     Asteroid(Object asteroid, const World& world);
-    void simulate(const World& world);
+    void simulate(const World& world, Diff& diff);
     void draw() const;
 
     Object asteroid;

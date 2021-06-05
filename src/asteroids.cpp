@@ -10,12 +10,6 @@ Asteroids::Asteroids()
 
 void Asteroids::simulate(const World& world, Diff& diff)
 {
-    for (const auto& asteroid : asteroids) {
-        if (asteroid.should_die) {
-            diff.death_positions.push_back(asteroid.asteroid.pos);
-        }
-    }
-
     constexpr auto predicate = [](const auto& asteroid) { return asteroid.should_die; };
     asteroids.erase(std::remove_if(asteroids.begin(), asteroids.end(), predicate), asteroids.end());
 
@@ -29,7 +23,7 @@ void Asteroids::simulate(const World& world, Diff& diff)
     }
 
     for (auto& asteroid : asteroids) {
-        asteroid.simulate(world);
+        asteroid.simulate(world, diff);
     }
 }
 
@@ -75,7 +69,7 @@ Asteroid::Asteroid(Object model, const World& world)
     }
 }
 
-void Asteroid::simulate(const World& world)
+void Asteroid::simulate(const World& world, Diff& diff)
 {
     double z_delta = speed * world.delta;
     asteroid.move({ 0, 0, z_delta });
@@ -88,6 +82,7 @@ void Asteroid::simulate(const World& world)
     Vec pos = asteroid.pos;
     if (out_of_bounds(pos.x) || out_of_bounds(pos.y) || out_of_bounds(pos.z)) {
         should_die = true;
+        return;
     }
 
     for (const auto& bullet : world.bullets.bullets) {
@@ -96,6 +91,8 @@ void Asteroid::simulate(const World& world)
             health -= parameters::bullet::damage;
             if (health <= 0) {
                 should_die = true;
+                diff.death_positions.push_back(asteroid.pos);
+                return;
             }
         }
     }
