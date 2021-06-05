@@ -37,14 +37,31 @@ void Ship::simulate(const World& world, Diff& diff)
         last_fire = 0;
     }
 
+    auto camera_pos = [&]() {
+        if (world.input.left()) {
+            draw_ship = false;
+            return parameters::ship::left_camera_pos;
+        } else if (world.input.right()) {
+            draw_ship = false;
+            return parameters::ship::right_camera_pos;
+        } else if (world.input.back()) {
+            draw_ship = false;
+            return parameters::ship::back_camera_pos;
+        } else {
+            draw_ship = true;
+            return parameters::ship::forward_camera_pos;
+        }
+    }();
     camera = ship;
-    camera.move(parameters::ship::camera_pos);
-    focus = ship.pos + ship.y * parameters::ship::camera_pos.y;
+    camera.move(camera_pos);
+    focus = ship.pos + ship.y * camera_pos.y;
     camera.draw_camera(focus);
 }
 
 void Ship::draw() const
 {
     camera.draw_camera(focus);
-    ship.draw();
+    if (draw_ship) {
+        ship.draw();
+    }
 }
