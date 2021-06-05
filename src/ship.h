@@ -18,6 +18,7 @@ struct Ship {
     Object camera;
     Vec focus;
     int last_fire { parameters::ship::fire_interval };
+    bool dead { false };
 };
 
 #endif

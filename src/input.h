@@ -5,6 +5,7 @@ class Input {
 public:
     Input take();
 
+    bool any() const { return m_any; }
     bool fire() const { return m_fire; }
     bool forward() const { return m_forward; }
     bool left() const { return m_left; }
@@ -17,6 +18,7 @@ public:
     void handle_mouse_move(int delta_x, int delta_y);
 
 private:
+    bool m_any { false };
     bool m_fire { false };
     bool m_forward { false };
     bool m_left { false };

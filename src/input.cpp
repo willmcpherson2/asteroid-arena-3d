@@ -14,6 +14,8 @@ Input Input::take()
 
 void Input::handle_key(int key, bool down)
 {
+    m_any = down;
+
     switch (key) {
         case parameters::input::fire:
             m_fire = down;

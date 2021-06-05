@@ -11,6 +11,13 @@ Ship::Ship()
 
 void Ship::simulate(const World& world, Diff& diff)
 {
+    if (dead) {
+        if (world.input.any()) {
+            diff.reset_world = true;
+        }
+        return;
+    }
+
     auto out_of_bounds = [](auto component) {
         double bound = parameters::arena::size * 0.5;
         return component >= bound || component <= -bound;
@@ -18,14 +25,16 @@ void Ship::simulate(const World& world, Diff& diff)
 
     Vec pos = ship.pos;
     if (out_of_bounds(pos.x) || out_of_bounds(pos.y) || out_of_bounds(pos.z)) {
-        diff.reset_world = true;
+        diff.death_positions.push_back(pos);
+        dead = true;
         return;
     }
 
     for (const auto& asteroid : world.asteroids.asteroids) {
         double distance = (ship.pos - asteroid.asteroid.pos).length();
         if (distance - asteroid.asteroid.size.x * 0.5 - parameters::ship::size * 0.5 < 0) {
-            diff.reset_world = true;
+            diff.death_positions.push_back(pos);
+            dead = true;
             return;
         }
     }
@@ -69,7 +78,7 @@ void Ship::simulate(const World& world, Diff& diff)
 void Ship::draw() const
 {
     camera.draw_camera(focus);
-    if (draw_ship) {
+    if (!dead && draw_ship) {
         ship.draw();
     }
 }
