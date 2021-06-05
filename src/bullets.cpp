@@ -3,10 +3,10 @@
 #include "world.h"
 
 Bullets::Bullets()
-    : bullet(obj::load("assets/bullet.obj", "assets/bullet.mtl", "assets/bullet.data", 64, 64))
+    : model(obj::load("assets/bullet.obj", "assets/bullet.mtl", "assets/bullet.data", 64, 64))
 {
-    bullet.scale(parameters::bullet::size);
-    bullet.set_display(Display::Texture);
+    model.scale(parameters::bullet::size);
+    model.set_display(Display::Texture);
 }
 
 void Bullets::simulate(const World& world)
@@ -22,7 +22,7 @@ void Bullets::simulate(const World& world)
 void Bullets::update(const World& world, const Diff& diff)
 {
     if (diff.fire) {
-        bullets.emplace_back(bullet, world);
+        bullets.emplace_back(model, world);
     }
 }
 
@@ -33,15 +33,15 @@ void Bullets::draw() const
     }
 }
 
-Bullet::Bullet(Object bullet, const World& world)
-    : bullet(bullet)
+Bullet::Bullet(Object model, const World& world)
+    : bullet(model)
 {
-    this->bullet.pos = world.ship.ship.pos;
+    bullet.pos = world.ship.ship.pos;
     z = world.ship.ship.z;
 
-    this->bullet.z = z;
-    this->bullet.move({ 0, 0, parameters::ship::size * 0.5 });
-    this->bullet.z = world.ship.camera.z;
+    bullet.z = z;
+    bullet.move({ 0, 0, parameters::ship::size * 0.5 });
+    bullet.z = world.ship.camera.z;
 }
 
 void Bullet::simulate(const World& world)

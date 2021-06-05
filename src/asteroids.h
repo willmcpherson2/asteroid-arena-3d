@@ -23,7 +23,7 @@ struct Asteroids {
     void simulate(const World& world);
     void draw() const;
 
-    Object asteroid;
+    Object model;
     std::vector<Asteroid> asteroids;
     int last_wave { parameters::asteroid::wave_interval };
     int wave_num { 1 };

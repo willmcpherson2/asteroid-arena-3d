@@ -23,7 +23,7 @@ struct Bullets {
     void update(const World& world, const Diff& diff);
     void draw() const;
 
-    Object bullet;
+    Object model;
     std::vector<Bullet> bullets;
 };
 
