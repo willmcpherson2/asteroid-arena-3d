@@ -35,13 +35,14 @@ namespace ship {
 namespace bullet {
     constexpr double speed = 0.15;
     constexpr double size = 0.4;
+    constexpr double damage = 2;
 }
 
 namespace asteroid {
     constexpr double min_size = 1;
     constexpr double max_size = 24;
-    constexpr double min_speed = 0.04;
-    constexpr double max_speed = 0.1;
+    constexpr double min_speed = 0.02;
+    constexpr double max_speed = 0.08;
     constexpr int wave_interval = 10000;
 }
 

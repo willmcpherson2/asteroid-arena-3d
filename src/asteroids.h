@@ -15,6 +15,7 @@ struct Asteroid {
 
     Object asteroid;
     double speed { 0 };
+    double health { 0 };
     bool should_die { false };
 };
 

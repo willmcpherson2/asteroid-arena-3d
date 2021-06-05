@@ -47,7 +47,9 @@ Asteroid::Asteroid(Object model, const World& world)
 
     asteroid.z = (world.ship.ship.pos - asteroid.pos).norm();
 
-    asteroid.scale(rand_range(parameters::asteroid::min_size, parameters::asteroid::max_size));
+    double size = rand_range(parameters::asteroid::min_size, parameters::asteroid::max_size);
+    asteroid.scale(size);
+    health = size;
 
     speed = rand_range(parameters::asteroid::min_speed, parameters::asteroid::max_speed);
 }
@@ -70,7 +72,10 @@ void Asteroid::simulate(const World& world)
     for (const auto& bullet : world.bullets.bullets) {
         double distance = (asteroid.pos - bullet.bullet.pos).length();
         if (distance - asteroid.size.x * 0.5 - parameters::bullet::size * 0.5 < 0) {
-            should_die = true;
+            health -= parameters::bullet::damage;
+            if (health <= 0) {
+                should_die = true;
+            }
         }
     }
 }
