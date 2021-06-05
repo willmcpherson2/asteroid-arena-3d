@@ -23,6 +23,7 @@ namespace view {
 namespace arena {
     constexpr int size = 400;
     constexpr double warning_size = 200;
+    constexpr double skybox_size = 600;
 }
 
 namespace ship {

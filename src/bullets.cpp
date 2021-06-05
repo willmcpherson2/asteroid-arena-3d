@@ -52,7 +52,7 @@ void Bullet::simulate(const World& world)
     bullet.z = world.ship.camera.z;
 
     constexpr auto out_of_bounds = [](auto component) {
-        double bound = parameters::arena::size * 0.5;
+        double bound = parameters::arena::skybox_size * 0.5;
         return component >= bound || component <= -bound;
     };
 

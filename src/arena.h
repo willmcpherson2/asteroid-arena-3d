@@ -33,6 +33,8 @@ struct Arena {
     Object red_bottom;
     Object red_right;
     Object red_left;
+
+    Object skybox;
 };
 
 #endif

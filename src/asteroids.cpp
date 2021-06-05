@@ -37,13 +37,13 @@ Asteroid::Asteroid(Object model, const World& world)
     : asteroid(model)
 {
     constexpr auto rand = []() {
-        return rand_range(-(parameters::arena::size * 0.5), parameters::arena::size * 0.5);
+        return rand_range(-(parameters::arena::skybox_size * 0.5), parameters::arena::skybox_size * 0.5);
     };
 
     asteroid.pos = { rand(), rand(), rand() };
     auto rand_component = static_cast<size_t>(rand_range(0, 2));
     bool rand_snap = rand_range(0, 1);
-    asteroid.pos[rand_component] = rand_snap ? -(parameters::arena::size * 0.5) : parameters::arena::size * 0.5;
+    asteroid.pos[rand_component] = rand_snap ? -(parameters::arena::skybox_size * 0.5) : parameters::arena::skybox_size * 0.5;
 
     asteroid.z = (world.ship.ship.pos - asteroid.pos).norm();
 
@@ -60,7 +60,7 @@ void Asteroid::simulate(const World& world)
     asteroid.move({ 0, 0, z_delta });
 
     auto out_of_bounds = [](auto component) {
-        double bound = parameters::arena::size * 0.5;
+        double bound = parameters::arena::skybox_size * 0.5;
         return component > bound || component < -bound;
     };
 

@@ -14,11 +14,11 @@ static Image load_image(const std::string& image_filename, int width, int height
     image.width = width;
     image.height = height;
 
-    for (size_t i = 0; i < buffer.size(); i += 4) {
-        unsigned char r = buffer[i];
-        unsigned char g = buffer[i + 1];
-        unsigned char b = buffer[i + 2];
-        unsigned char a = buffer[i + 3];
+    for (size_t i = buffer.size() - 1; i > 4; i -= 4) {
+        unsigned char a = buffer[i];
+        unsigned char b = buffer[i - 1];
+        unsigned char g = buffer[i - 2];
+        unsigned char r = buffer[i - 3];
         Pixel c { r, g, b, a };
         image.pixels.push_back(c);
     }

@@ -24,6 +24,10 @@ Arena::Arena()
     load_wall(red_bottom, "assets/arena-red-bottom.obj", "assets/arena-red-bottom.mtl");
     load_wall(red_right, "assets/arena-red-right.obj", "assets/arena-red-right.mtl");
     load_wall(red_left, "assets/arena-red-left.obj", "assets/arena-red-left.mtl");
+
+    skybox = Object(obj::load("assets/skybox.obj", "assets/skybox.mtl", "assets/skybox.data", 512, 512));
+    skybox.set_display(Display::Texture);
+    skybox.scale(parameters::arena::skybox_size);
 }
 
 void Arena::simulate(const World& world)
@@ -41,6 +45,8 @@ void Arena::simulate(const World& world)
 
 void Arena::draw() const
 {
+    skybox.draw();
+
     constexpr auto draw_wall = [](bool warn, const auto& wall) {
         if (warn) {
             wall.draw();
