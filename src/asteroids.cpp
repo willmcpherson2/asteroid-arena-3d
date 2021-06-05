@@ -8,8 +8,14 @@ Asteroids::Asteroids()
     model.set_display(Display::Texture);
 }
 
-void Asteroids::simulate(const World& world)
+void Asteroids::simulate(const World& world, Diff& diff)
 {
+    for (const auto& asteroid : asteroids) {
+        if (asteroid.should_die) {
+            diff.death_positions.push_back(asteroid.asteroid.pos);
+        }
+    }
+
     constexpr auto predicate = [](const auto& asteroid) { return asteroid.should_die; };
     asteroids.erase(std::remove_if(asteroids.begin(), asteroids.end(), predicate), asteroids.end());
 

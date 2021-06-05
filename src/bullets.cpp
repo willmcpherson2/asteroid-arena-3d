@@ -45,10 +45,8 @@ Bullet::Bullet(Object model, const World& world)
 {
     bullet.pos = world.ship.ship.pos;
     z = world.ship.ship.z;
-
     bullet.z = z;
     bullet.move({ 0, 0, parameters::ship::size * 0.5 });
-    bullet.z = world.ship.camera.z;
 }
 
 void Bullet::simulate(const World& world)
@@ -56,7 +54,7 @@ void Bullet::simulate(const World& world)
     double z_delta = parameters::bullet::speed * world.delta;
     bullet.z = z;
     bullet.move({ 0, 0, z_delta });
-    bullet.z = world.ship.camera.z;
+    bullet.z = (bullet.pos - world.ship.camera.pos).norm();
 
     constexpr auto out_of_bounds = [](auto component) {
         double bound = parameters::arena::skybox_size * 0.5;

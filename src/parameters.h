@@ -45,10 +45,17 @@ namespace bullet {
     constexpr double damage = 2;
 }
 
+namespace particle {
+    constexpr int amount = 3;
+    constexpr double speed = 0.005;
+    constexpr double size = 4;
+    constexpr double duration = 5000;
+}
+
 namespace asteroid {
     constexpr double min_size = 1;
     constexpr double max_size = 24;
-    constexpr double min_speed = 0.02;
+    constexpr double min_speed = 0.04;
     constexpr double max_speed = 0.08;
     constexpr int wave_interval = 10000;
 }

@@ -38,16 +38,19 @@ void World::simulate(int delta, Input input)
 
     arena.simulate(*this);
     ship.simulate(*this, diff);
-    asteroids.simulate(*this);
+    asteroids.simulate(*this, diff);
+    particles.simulate(*this);
     bullets.simulate(*this);
 
     bullets.update(*this, diff);
+    particles.update(diff);
 
     if (diff.reset_world) {
         light = Light();
         ship = Ship();
         arena = Arena();
         asteroids = Asteroids();
+        particles = Particles();
         bullets = Bullets();
     }
 }
@@ -59,5 +62,6 @@ void World::draw() const
     ship.draw();
     arena.draw();
     asteroids.draw();
+    particles.draw();
     bullets.draw();
 }

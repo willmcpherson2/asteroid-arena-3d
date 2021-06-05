@@ -6,11 +6,13 @@
 #include "bullets.h"
 #include "input.h"
 #include "light.h"
+#include "particles.h"
 #include "ship.h"
 
 struct Diff {
     bool reset_world { false };
     bool fire { false };
+    std::vector<Vec> death_positions;
 };
 
 struct World {
@@ -25,6 +27,7 @@ struct World {
     Ship ship;
     Arena arena;
     Asteroids asteroids;
+    Particles particles;
     Bullets bullets;
 };
 

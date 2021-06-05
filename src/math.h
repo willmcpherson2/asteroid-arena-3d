@@ -6,53 +6,6 @@
 #include <iostream>
 #include <random>
 
-template <typename T>
-void print(T t)
-{
-    std::cout << t;
-}
-
-template <typename T, typename... Args>
-void print(T t, Args... args)
-{
-    std::cout << t << " ";
-    print(args...);
-}
-
-inline void println()
-{
-    std::cout << "\n";
-}
-
-template <typename T>
-void println(T t)
-{
-    std::cout << t << "\n";
-}
-
-template <typename T, typename... Args>
-void println(T t, Args... args)
-{
-    std::cout << t << " ";
-    println(args...);
-}
-
-inline int rand_range(int min, int max)
-{
-    static std::random_device device;
-    static std::mt19937 generator(device());
-    std::uniform_int_distribution<int> distribution(min, max);
-    return distribution(generator);
-}
-
-inline double rand_range(double min, double max)
-{
-    static std::random_device device;
-    static std::mt19937 generator(device());
-    std::uniform_real_distribution<double> distribution(min, max);
-    return distribution(generator);
-}
-
 constexpr double pi = 3.141592653589793238462643383279502;
 
 constexpr double radians(double theta)
@@ -156,6 +109,13 @@ struct Vec {
     double x { 0 };
     double y { 0 };
     double z { 0 };
+
+    void operator=(double scalar)
+    {
+        x = scalar;
+        y = scalar;
+        z = scalar;
+    }
 
     double length() const
     {
@@ -371,5 +331,57 @@ struct Vec {
         return os;
     }
 };
+
+template <typename T>
+void print(T t)
+{
+    std::cout << t;
+}
+
+template <typename T, typename... Args>
+void print(T t, Args... args)
+{
+    std::cout << t << " ";
+    print(args...);
+}
+
+inline void println()
+{
+    std::cout << "\n";
+}
+
+template <typename T>
+void println(T t)
+{
+    std::cout << t << "\n";
+}
+
+template <typename T, typename... Args>
+void println(T t, Args... args)
+{
+    std::cout << t << " ";
+    println(args...);
+}
+
+inline int rand_range(int min, int max)
+{
+    static std::random_device device;
+    static std::mt19937 generator(device());
+    std::uniform_int_distribution<int> distribution(min, max);
+    return distribution(generator);
+}
+
+inline double rand_range(double min, double max)
+{
+    static std::random_device device;
+    static std::mt19937 generator(device());
+    std::uniform_real_distribution<double> distribution(min, max);
+    return distribution(generator);
+}
+
+inline Vec rand_vec(double min, double max)
+{
+    return Vec { rand_range(min, max), rand_range(min, max), rand_range(min, max) };
+}
 
 #endif
