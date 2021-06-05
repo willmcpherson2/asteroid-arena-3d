@@ -54,17 +54,19 @@ Asteroid::Asteroid(Object model, const World& world)
 
     speed = rand_range(parameters::asteroid::min_speed, parameters::asteroid::max_speed);
 
-    auto x_hemi = rand_range(0.0, 0.2);
-    auto y_hemi = rand_range(0.0, 0.2);
-    auto z_hemi = rand_range(0.0, 0.2);
-    auto x_shift = rand_range(0.0, 0.2);
-    auto y_shift = rand_range(0.0, 0.2);
-    auto z_shift = rand_range(0.0, 0.2);
     for (auto& polygon : asteroid.model.polygons) {
         for (auto& vertex : polygon.vertices) {
-            vertex.vertex.x += vertex.vertex.x >= x_hemi ? x_shift : 0;
-            vertex.vertex.y += vertex.vertex.y >= y_hemi ? y_shift : 0;
-            vertex.vertex.x += vertex.vertex.z >= z_hemi ? z_shift : 0;
+            auto perturbed_vertex = vertex.vertex + rand_vec(-parameters::asteroid::perturbation, parameters::asteroid::perturbation);
+
+            for (auto& polygon : asteroid.model.polygons) {
+                for (auto& other_vertex : polygon.vertices) {
+                    if (&vertex != &other_vertex && vertex.vertex.near(other_vertex.vertex)) {
+                        other_vertex.vertex = perturbed_vertex;
+                    }
+                }
+            }
+
+            vertex.vertex = perturbed_vertex;
         }
     }
 }

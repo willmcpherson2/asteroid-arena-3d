@@ -58,6 +58,7 @@ namespace asteroid {
     constexpr double min_speed = 0.04;
     constexpr double max_speed = 0.08;
     constexpr int wave_interval = 10000;
+    constexpr double perturbation = 0.04;
 }
 
 }
