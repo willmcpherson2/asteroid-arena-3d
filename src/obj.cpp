@@ -1,4 +1,5 @@
 #include "obj.h"
+#include <OpenGL/gl.h>
 #include <fstream>
 #include <sstream>
 #include <unordered_map>

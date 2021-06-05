@@ -1,7 +1,6 @@
 #ifndef MATH_H
 #define MATH_H
 
-#include <OpenGL/gl.h>
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -336,21 +335,6 @@ struct Vec {
         };
 
         return a * matrix;
-    }
-
-    void draw() const
-    {
-        glVertex3d(x, y, z);
-    }
-
-    void draw_normal() const
-    {
-        glNormal3d(x, y, z);
-    }
-
-    void draw_uv() const
-    {
-        glTexCoord2d(x, y);
     }
 
     const double& operator[](size_t i) const

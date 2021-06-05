@@ -128,9 +128,9 @@ void Polygon::draw() const
 
 void Vertex::draw() const
 {
-    normal.draw_normal();
-    uv.draw_uv();
-    vertex.draw();
+    glNormal3d(normal.x, normal.y, normal.z);
+    glTexCoord2d(uv.x, uv.y);
+    glVertex3d(vertex.x, vertex.y, vertex.z);
 }
 
 void Material::draw() const
