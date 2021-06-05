@@ -22,6 +22,14 @@ void Ship::simulate(const World& world, Diff& diff)
         return;
     }
 
+    for (const auto& asteroid : world.asteroids.asteroids) {
+        double distance = (ship.pos - asteroid.asteroid.pos).length();
+        if (distance - asteroid.asteroid.size.x * 0.5 - parameters::ship::size * 0.5 < 0) {
+            diff.reset_world = true;
+            return;
+        }
+    }
+
     double x_delta = world.delta * parameters::input::mouse_sensitivity * world.input.mouse_delta_x();
     double y_delta = world.delta * parameters::input::mouse_sensitivity * world.input.mouse_delta_y();
     ship.look(x_delta, y_delta);
