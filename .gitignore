@@ -5,6 +5,7 @@
 !.gitattributes
 !.clang-format
 !Makefile
+!build.sh
 !src
 !src/**
 !assets
