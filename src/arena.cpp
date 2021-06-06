@@ -26,7 +26,6 @@ Arena::Arena()
     load_wall(red_left, "assets/arena-red-left.obj", "assets/arena-red-left.mtl");
 
     skybox = Object(obj::load("assets/skybox.obj", "assets/skybox.mtl", "assets/skybox.data", 512, 512));
-    skybox.set_display(Display::Texture);
     skybox.scale(parameters::arena::skybox_size);
 }
 

@@ -64,6 +64,7 @@ static std::unordered_map<std::string, Material> load_mtl(const std::string& mtl
         Diffuse,
         Specular,
         Emmissive,
+        Texture,
     };
 
     static std::unordered_map<std::string, Keyword> keywords = {
@@ -72,6 +73,7 @@ static std::unordered_map<std::string, Material> load_mtl(const std::string& mtl
         { "Kd", Keyword::Diffuse },
         { "Ks", Keyword::Specular },
         { "Ke", Keyword::Emmissive },
+        { "map_Kd", Keyword::Texture },
     };
 
     std::ifstream file(mtl_filename, std::ios::in);
@@ -98,9 +100,6 @@ static std::unordered_map<std::string, Material> load_mtl(const std::string& mtl
         switch (keyword) {
             case Keyword::Material:
                 if (name != "") {
-                    if (image_filename != "") {
-                        material.texture = load_texture(image_filename, width, height);
-                    }
                     materials.insert({ name, material });
                 }
                 name = *word_it;
@@ -118,13 +117,16 @@ static std::unordered_map<std::string, Material> load_mtl(const std::string& mtl
             case Keyword::Emmissive:
                 material.emissive = colour(word_it);
                 break;
+            case Keyword::Texture:
+                if (image_filename != "") {
+                    material.texture = load_texture(image_filename, width, height);
+                    material.display = Display::Texture;
+                }
+                break;
         }
     }
 
     if (name != "") {
-        if (image_filename != "") {
-            material.texture = load_texture(image_filename, width, height);
-        }
         materials.insert({ name, material });
     }
 

@@ -4,7 +4,7 @@
 #include "world.h"
 
 Ship::Ship()
-    : ship(obj::load("assets/ship.obj", "assets/ship.mtl"))
+    : ship(obj::load("assets/ship.obj", "assets/ship.mtl", "assets/thruster.data", 256, 256))
 {
     ship.scale(parameters::ship::size);
 }

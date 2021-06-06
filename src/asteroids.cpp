@@ -5,7 +5,6 @@
 Asteroids::Asteroids()
     : model(obj::load("assets/asteroid.obj", "assets/asteroid.mtl", "assets/asteroid.data", 64, 64))
 {
-    model.set_display(Display::Texture);
 }
 
 void Asteroids::simulate(const World& world, Diff& diff)

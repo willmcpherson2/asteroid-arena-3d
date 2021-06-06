@@ -6,7 +6,6 @@ Particles::Particles()
     : model(obj::load("assets/particle.obj", "assets/particle.mtl", "assets/particle.data", 32, 32))
 {
     model.scale(parameters::particle::size);
-    model.set_display(Display::Texture);
 }
 
 void Particles::simulate(const World& world)

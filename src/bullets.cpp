@@ -6,7 +6,6 @@ Bullets::Bullets()
     : model(obj::load("assets/bullet.obj", "assets/bullet.mtl", "assets/bullet.data", 64, 64))
 {
     model.scale(parameters::bullet::size);
-    model.set_display(Display::Texture);
 }
 
 void Bullets::simulate(const World& world)
