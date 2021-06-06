@@ -91,10 +91,6 @@ void Object::look(double x_delta, double y_delta)
 
     rotate_y(x_delta);
     rotate(x, y_delta);
-
-    assert(near(x.theta(y), 90));
-    assert(near(x.theta(z), 90));
-    assert(near(y.theta(z), 90));
 }
 
 void Object::set_display(Display display)

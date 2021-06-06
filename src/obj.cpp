@@ -177,7 +177,6 @@ Model obj::load(const std::string& obj_filename, const std::string& mtl_filename
         if (key_val_it != keywords.end()) {
             keyword = key_val_it->second;
         } else {
-            std::cout << "Unexpected keyword in OBJ file: " << first_word << "\n";
             assert(false);
         }
         ++word_it;
@@ -228,7 +227,6 @@ Model obj::load(const std::string& obj_filename, const std::string& mtl_filename
                     std::string vertex_index_str;
                     std::getline(face_element, vertex_index_str, '/');
                     auto vertex_index = std::stoull(vertex_index_str) - 1;
-                    assert(vertex_index < vertex_list.size());
                     auto vertex = vertex_list[vertex_index];
 
                     std::string uv_index_str;
@@ -236,7 +234,6 @@ Model obj::load(const std::string& obj_filename, const std::string& mtl_filename
                     auto uv = [&]() {
                         if (uv_index_str != "") {
                             auto uv_index = std::stoull(uv_index_str) - 1;
-                            assert(uv_index < uv_list.size());
                             return uv_list[uv_index];
                         } else {
                             return Vec {};
@@ -246,7 +243,6 @@ Model obj::load(const std::string& obj_filename, const std::string& mtl_filename
                     std::string normal_index_str;
                     std::getline(face_element, normal_index_str, '/');
                     auto normal_index = std::stoull(normal_index_str) - 1;
-                    assert(normal_index < normal_list.size());
                     auto normal = normal_list[normal_index];
 
                     polygon.add({ vertex, normal, uv });

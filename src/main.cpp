@@ -3,8 +3,6 @@
 #include "world.h"
 #include <CoreGraphics/CoreGraphics.h>
 #include <GLUT/glut.h>
-#include <iomanip>
-#include <iostream>
 
 static std::unique_ptr<World> g_world;
 static Input g_input;
@@ -14,11 +12,6 @@ static void display()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     g_world->draw();
-
-    unsigned err = 0;
-    while ((err = glGetError()) != GL_NO_ERROR) {
-        std::cout << "display: " << gluErrorString(err) << "\n";
-    }
 
     glutSwapBuffers();
 }
@@ -56,16 +49,12 @@ static void mouse_move(int, int)
 
 int main(int argc, char** argv)
 {
-    std::cout << std::fixed << std::setprecision(2);
-
     CGAssociateMouseAndMouseCursorPosition(false);
 
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(1080, 1080);
     glutInitWindowPosition(static_cast<int>((2560 - 1080) * 0.5), static_cast<int>((1440 - 1080) * 0.5));
     glutCreateWindow("Asteroid Arena 3D");
-    // glutFullScreen();
+    glutFullScreen();
 
     glClearColor(0, 0, 0, 1);
     glEnable(GL_LIGHTING);
