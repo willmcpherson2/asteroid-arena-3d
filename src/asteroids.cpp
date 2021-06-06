@@ -75,16 +75,40 @@ void Asteroid::simulate(const World& world, Diff& diff)
     double z_delta = speed * world.delta;
     asteroid.move({ 0, 0, z_delta });
 
-    auto out_of_bounds = [](auto component) {
-        double bound = parameters::arena::skybox_size * 0.5;
-        return component > bound || component < -bound;
+    constexpr auto in_bounds = [](double component) {
+        return component < parameters::arena::size * 0.5 && component > -(parameters::arena::size * 0.5);
     };
 
-    Vec pos = asteroid.pos;
-    if (out_of_bounds(pos.x) || out_of_bounds(pos.y) || out_of_bounds(pos.z)) {
-        should_die = true;
-        return;
+    if (!in_arena) {
+        if (in_bounds(asteroid.pos.x) && in_bounds(asteroid.pos.y) && in_bounds(asteroid.pos.z)) {
+            in_arena = true;
+        } else {
+            return;
+        }
     }
+
+    auto flip = [&](auto pos_component, auto& z_component) {
+        if (!in_bounds(pos_component)) {
+            z_component = -z_component;
+        }
+    };
+
+    flip(asteroid.pos.x, asteroid.z.x);
+    flip(asteroid.pos.y, asteroid.z.y);
+    flip(asteroid.pos.z, asteroid.z.z);
+
+    constexpr auto adjust = [](auto& component) {
+        if (component > parameters::arena::size * 0.5) {
+            component = parameters::arena::size * 0.5;
+        }
+        if (component < -(parameters::arena::size * 0.5)) {
+            component = -(parameters::arena::size * 0.5);
+        }
+    };
+
+    adjust(asteroid.pos.x);
+    adjust(asteroid.pos.y);
+    adjust(asteroid.pos.z);
 
     for (const auto& bullet : world.bullets.bullets) {
         double distance = (asteroid.pos - bullet.bullet.pos).length();
