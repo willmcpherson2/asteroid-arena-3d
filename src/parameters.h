@@ -40,7 +40,7 @@ namespace ship {
 }
 
 namespace bullet {
-    constexpr double speed = 0.15;
+    constexpr double speed = 0.2;
     constexpr double size = 0.4;
     constexpr double damage = 2;
 }
