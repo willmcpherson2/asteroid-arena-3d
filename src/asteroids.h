@@ -14,7 +14,10 @@ struct Asteroid {
     void draw() const;
 
     Object asteroid;
+    Object pos;
+    Object rotation;
     double speed { 0 };
+    double rotation_speed { 0 };
     double health { 0 };
     bool in_arena { false };
     bool should_die { false };

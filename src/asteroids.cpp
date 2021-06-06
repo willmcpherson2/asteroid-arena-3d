@@ -40,12 +40,14 @@ Asteroid::Asteroid(Object model, const World& world)
         return rand_range(-(parameters::arena::skybox_size * 0.5), parameters::arena::skybox_size * 0.5);
     };
 
-    asteroid.pos = { rand(), rand(), rand() };
+    pos.pos = { rand(), rand(), rand() };
     auto rand_component = static_cast<size_t>(rand_range(0, 2));
     bool rand_snap = rand_range(0, 1);
-    asteroid.pos[rand_component] = rand_snap ? -(parameters::arena::skybox_size * 0.5) : parameters::arena::skybox_size * 0.5;
+    pos.pos[rand_component] = rand_snap ? -(parameters::arena::skybox_size * 0.5) : parameters::arena::skybox_size * 0.5;
 
-    asteroid.z = (world.ship.ship.pos - asteroid.pos).norm();
+    pos.z = (world.ship.ship.pos - pos.pos).norm();
+
+    rotation_speed = rand_range(-parameters::asteroid::rotation_speed, parameters::asteroid::rotation_speed);
 
     double size = rand_range(parameters::asteroid::min_size, parameters::asteroid::max_size);
     asteroid.scale(size);
@@ -72,8 +74,14 @@ Asteroid::Asteroid(Object model, const World& world)
 
 void Asteroid::simulate(const World& world, Diff& diff)
 {
-    double z_delta = speed * world.delta;
-    asteroid.move({ 0, 0, z_delta });
+    pos.move({ 0, 0, speed * world.delta });
+
+    rotation.rotate_y(rotation_speed * world.delta);
+
+    asteroid.x = rotation.x;
+    asteroid.y = rotation.y;
+    asteroid.z = rotation.z;
+    asteroid.pos = pos.pos;
 
     constexpr auto in_bounds = [](double component) {
         return component < parameters::arena::size * 0.5 && component > -(parameters::arena::size * 0.5);
@@ -93,9 +101,9 @@ void Asteroid::simulate(const World& world, Diff& diff)
         }
     };
 
-    flip(asteroid.pos.x, asteroid.z.x);
-    flip(asteroid.pos.y, asteroid.z.y);
-    flip(asteroid.pos.z, asteroid.z.z);
+    flip(asteroid.pos.x, pos.z.x);
+    flip(asteroid.pos.y, pos.z.y);
+    flip(asteroid.pos.z, pos.z.z);
 
     constexpr auto adjust = [](auto& component) {
         if (component > parameters::arena::size * 0.5) {

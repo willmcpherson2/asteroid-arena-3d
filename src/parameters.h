@@ -53,10 +53,11 @@ namespace particle {
 }
 
 namespace asteroid {
-    constexpr double min_size = 1;
+    constexpr double min_size = 4;
     constexpr double max_size = 24;
     constexpr double min_speed = 0.04;
     constexpr double max_speed = 0.08;
+    constexpr double rotation_speed = 0.5;
     constexpr int wave_interval = 10000;
     constexpr double perturbation = 0.04;
 }

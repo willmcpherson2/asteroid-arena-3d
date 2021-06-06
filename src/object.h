@@ -83,6 +83,7 @@ struct Object {
     void rotate(Vec axis, double theta);
     void rotate_x(double theta);
     void rotate_y(double theta);
+    void rotate_z(double theta);
     void look(double x_delta, double y_delta);
     void set_colour(Colour colour);
     void set_display(Display display);

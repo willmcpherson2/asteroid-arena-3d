@@ -77,6 +77,13 @@ void Object::rotate_y(double theta)
     z = z.rotate_y(theta);
 }
 
+void Object::rotate_z(double theta)
+{
+    x = x.rotate_z(theta);
+    y = y.rotate_z(theta);
+    z = z.rotate_z(theta);
+}
+
 void Object::look(double x_delta, double y_delta)
 {
     bool up_vector_top_hemisphere = y.theta({ 0, 1, 0 }) < 90;
